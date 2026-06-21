@@ -9,9 +9,16 @@ namespace Ex05
 {
     public class displayButton : Button
     {
-        public displayButton()
+        private readonly int k_cellSize = 60;
+        private readonly int r_Row;
+        private readonly int r_Col;
+        public displayButton(int i_row, int i_col)
         {
-            this.Enabled = false;
+            r_Row = i_row; 
+            r_Col = i_col;   
+            this.Enabled = true;
+            Width = k_cellSize;
+            Height = k_cellSize;
         }
         public void draw(eCellState i_Sign)
         {

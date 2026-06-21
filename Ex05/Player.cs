@@ -4,7 +4,7 @@
 
 namespace Ex05
 {
-    internal class Player
+    public class Player
     {
         private int m_Score;
         private eCellState m_Sign;

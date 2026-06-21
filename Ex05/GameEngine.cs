@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 
 namespace Ex05
@@ -79,8 +80,9 @@ namespace Ex05
             return i_Board.CheckIfBoardIsFull();
         }
 
-        public static bool MinDamage(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign)
+        public static bool MinDamage(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign,  out Point o_location )
         {
+            o_location = new Point();
             bool successMove = true;
             const int k_InitialMaxRisk = 100;
             int minRisk = k_InitialMaxRisk;
@@ -109,7 +111,8 @@ namespace Ex05
                     }
                }
             }
-
+            o_location.X = minCellRow;
+            o_location.Y = minCellColumn;
             if(minRisk < i_GameBoard.GetLength() - 1)
             {
                 i_GameBoard.FillCell(minCellRow, minCellColumn, i_ComputerSign);
@@ -122,9 +125,11 @@ namespace Ex05
             return successMove;
         }
 
-        public static void RandomMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign)
+        public static void RandomMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign, out Point o_location)
         {
+
             Random random = new Random();
+            o_location = new Point();
             int startRow = random.Next(0, i_GameBoard.GetLength());
             int startCol = random.Next(0, i_GameBoard.GetLength());
 
@@ -136,6 +141,8 @@ namespace Ex05
                     int col = (startCol + j) % i_GameBoard.GetLength();
                     if (i_GameBoard.IsCellEmpty(row, col))
                     {
+                        o_location.X = row;
+                        o_location.Y = col;
                         i_GameBoard.FillCell(row, col, i_ComputerSign);
                         return; 
                     }
@@ -143,14 +150,17 @@ namespace Ex05
             }
         }
 
-        public static void ComputerMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign) 
+        public static Point ComputerMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign) 
         {
-            bool ismoveMade = MinDamage(i_GameBoard, i_ComputerSign);
+            Point location = new Point();
+            bool ismoveMade = MinDamage(i_GameBoard, i_ComputerSign,  out location);
 
             if (!ismoveMade)
             {
-                RandomMove(i_GameBoard, i_ComputerSign);
+                RandomMove(i_GameBoard, i_ComputerSign, out location);
             }
+
+            return location;
         }
 
        

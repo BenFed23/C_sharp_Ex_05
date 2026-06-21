@@ -19,7 +19,7 @@ namespace Ex05
         }
         private void FormGameSettings_Load(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            
         }
         private void PlayAgainstHumanChecked(object sender, EventArgs e)
         {
@@ -27,6 +27,7 @@ namespace Ex05
             {
                 textBox2.Enabled = true;
                 textBox2.Text = string.Empty;
+
             }
             else 
             {
@@ -36,14 +37,18 @@ namespace Ex05
         }
         private void StartButton_Click(object sender, EventArgs e)
         {
+            bool isAgasinstComputer = false;
            string player1Name = textBox1.Text;
-           bool twoPlayer = checkBox1.Checked;
            string player2Name = textBox2.Text;
            int bordSize = (int)RowSIze.Value;
-           Game newGame = new Game( player1Name, player2Name ,twoPlayer , bordSize );
+            if (!checkBox1.Checked)
+            {
+                isAgasinstComputer = true;
+            }
+           Game newGame = new Game( player1Name, player2Name , isAgasinstComputer, bordSize );
            this.Hide();
-            // GameForm NewGameDisplay = new GameForm();
-            //newBoard.ShowDialog();
+           FormGame NewGameDisplay = new FormGame(newGame );
+           NewGameDisplay.ShowDialog();
             this.Close();
 
         }
@@ -56,7 +61,5 @@ namespace Ex05
             
             RowSIze.Value = ColomSize.Value;
         }
-
-
     }
 }

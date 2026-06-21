@@ -7,8 +7,8 @@ namespace Ex05
     {
         public static void Main() 
         {
-            //Game newGame = new Game();
-            //newGame.Run();
+            FormGameSettings startMenu = new FormGameSettings();
+            startMenu.ShowDialog();
         }
     }
 }

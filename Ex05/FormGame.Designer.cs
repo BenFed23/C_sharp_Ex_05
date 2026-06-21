@@ -28,37 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelPlayer1Score = new System.Windows.Forms.Label();
+            this.labelPlayer2Score = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label1
+            // labelPlayer1Score
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(215, 369);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Score: ";
-           
+            this.labelPlayer1Score.AutoSize = true;
+            this.labelPlayer1Score.Location = new System.Drawing.Point(206, 409);
+            this.labelPlayer1Score.Name = "labelPlayer1Score";
+            this.labelPlayer1Score.Size = new System.Drawing.Size(119, 20);
+            this.labelPlayer1Score.TabIndex = 0;
+            this.labelPlayer1Score.Text = "Player 1 Score: ";
             // 
-            // label2
+            // labelPlayer2Score
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(457, 368);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 20);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "label2";
+            this.labelPlayer2Score.AutoSize = true;
+            this.labelPlayer2Score.Location = new System.Drawing.Point(461, 409);
+            this.labelPlayer2Score.Name = "labelPlayer2Score";
+            this.labelPlayer2Score.Size = new System.Drawing.Size(116, 20);
+            this.labelPlayer2Score.TabIndex = 1;
+            this.labelPlayer2Score.Text = "Player 2 score: ";
             // 
-            // GameForm
+            // FormGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Name = "GameForm";
+            this.Controls.Add(this.labelPlayer2Score);
+            this.Controls.Add(this.labelPlayer1Score);
+            this.Name = "FormGame";
             this.Text = "GameForm";
             this.Load += new System.EventHandler(this.GameForm_Load);
             this.ResumeLayout(false);
@@ -68,7 +67,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelPlayer1Score;
+        private System.Windows.Forms.Label labelPlayer2Score;
     }
 }

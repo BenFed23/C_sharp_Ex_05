@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,24 +14,141 @@ namespace Ex05
     public partial class FormGame : Form
     {
         private Game m_gameboard;
-        
+        private displayButton[,] m_displayBoard;
+
         public FormGame(Game i_newGame)
         {
+
             m_gameboard = i_newGame;
-            
+            m_displayBoard = CreateBoard(m_gameboard.returnBordlenght());
             InitializeComponent();
+            labelPlayer1Score.Text = m_gameboard.Player1ScoreText;
+            labelPlayer2Score.Text = m_gameboard.Player2ScoreText;
+
         }
 
         private void GameForm_Load(object sender, EventArgs e)
         {
-            displayButton[,] newBoardDisplay = CreateBoard(m_gameboard.returnBordlenght());
+            int boardSize = m_gameboard.returnBordlenght();
+            m_displayBoard = CreateBoard(boardSize);
+
+            
+            const int k_ButtonSize = 60;
+            const int k_Margin = 10;
+
+            for (int i = 0; i < boardSize; i++)
+            {
+                for (int j = 0; j < boardSize; j++)
+                {
+                    m_displayBoard[i, j] = new displayButton(i, j);
+                    m_displayBoard[i, j].Size = new Size(k_ButtonSize, k_ButtonSize);
+                    int posX = k_Margin + (j * k_ButtonSize);
+                    int posY = k_Margin + (i * k_ButtonSize);
+                    m_displayBoard[i, j].Location = new Point(posX, posY);
+                    m_displayBoard[i, j].Click += DisplayButtonClick;
+                    this.Controls.Add(m_displayBoard[i, j]);
+                }
+            }
+
+            
+            int formWidth = (boardSize * k_ButtonSize) + (k_Margin * 3);
+            int formHeight = (boardSize * k_ButtonSize) + 100; 
+            this.ClientSize = new Size(formWidth, formHeight);
         }
-        private displayButton[,] CreateBoard(int i_bordSize) 
+        private displayButton[,] CreateBoard(int i_bordSize)
         {
             displayButton[,] GameBoard = new displayButton[i_bordSize, i_bordSize];
+
             return GameBoard;
         }
+        private void DisplayButtonClick(object sender, EventArgs e)
+        {
+            displayButton clickedButtun = sender as displayButton;
+            if (clickedButtun.Text != string.Empty)
+            {
+                return;
+            }
+            else
+            {
+                m_gameboard.MakeAHumanMove(clickedButtun.Location.X, clickedButtun.Location.Y);
+                MakeATurn(clickedButtun);
+                if (m_gameboard.IsAgainstComputer)
+                {
+                    Point location = m_gameboard.MakeAComputreMove();
+                    displayButton computerButton = m_displayBoard[location.X, location.Y];
+                    MakeATurn(computerButton);
+                }
+            }
+        }
+        private void MakeATurn(displayButton i_button)
+        {
+            i_button.draw(m_gameboard.currentPlayer.Sign);
+            bool GameOver = (m_gameboard.CheckifThereIsAWinner()) || (m_gameboard.CheckIfThereIsATie());
+            if (GameOver)
+            {
+                m_gameboard.AddPointsToCurrentPlayer();//check if there is a need for swich
+                labelPlayer1Score.Text = m_gameboard.Player1ScoreText;
+                labelPlayer2Score.Text = m_gameboard.Player2ScoreText;
+                askForRemach(GameOver);
+            }
+        }
+        public void ResetBoard()
+        {
 
-        
+            m_gameboard.ResetLogicalBoard();
+            ResetPysicalBoard();
+
+        }
+        private void ResetPysicalBoard()
+        {
+            foreach (displayButton button in m_displayBoard)
+            {
+                if (button != null)
+                {
+                    button.Enabled = true;
+                    button.Text = string.Empty;
+                }
+            }
+        }
+        public void EndGame()
+        {
+            this.Close();
+        }
+
+        private void askForRemach(bool i_GameOver)
+        {
+            if (i_GameOver)
+            {
+                string messageText = string.Empty;
+                string messageTitle = string.Empty;
+
+
+                if (m_gameboard.CheckifThereIsAWinner())
+                {
+                    
+                    messageText = string.Format("{0} Won!\nWould you like to play another round?", m_gameboard.currentPlayer.ToString());
+                    messageTitle = "A Win!";
+                }
+                else if (m_gameboard.CheckIfThereIsATie())
+                {
+                    messageText = "Tie!\nWould you like to play another round?";
+                    messageTitle = "A Tie!";
+                }
+                DialogResult result = MessageBox.Show(messageText, messageTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if (result == DialogResult.Yes)
+                {
+                    ResetBoard();
+                }
+                else
+                {
+                    EndGame();
+                }
+            }
+
+
+
+
+
+        }
     }
 }

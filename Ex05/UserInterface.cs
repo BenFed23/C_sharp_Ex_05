@@ -246,9 +246,6 @@ namespace Ex05
             Console.WriteLine("It's a tie! The board is full.");
         }
 
-        public void ClearScreen()
-        {
-            Ex02.ConsoleUtils.Screen.Clear();
-        }
+       
     }
 }

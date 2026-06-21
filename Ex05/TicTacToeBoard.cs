@@ -1,4 +1,4 @@
-﻿//using Ex05.ConsoleUtils;
+﻿
 using System;
 
 namespace Ex05
@@ -23,8 +23,7 @@ namespace Ex05
 
                 return m_Matrixboard[i_MatrixRow, i_MatrixColumn];
         }
-
-        private void fillBoardWithBlankSpaces()
+        public void fillBoardWithBlankSpaces()
         {
             for (int row = 0; row < r_BoardSize; ++row)
             {
