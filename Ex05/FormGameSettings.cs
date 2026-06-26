@@ -12,7 +12,6 @@ namespace Ex05
 {
     public partial class FormGameSettings : Form
     {
-       
         public FormGameSettings()
         {
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -28,7 +27,6 @@ namespace Ex05
             {
                 textBox2.Enabled = true;
                 textBox2.Text = string.Empty;
-
             }
             else 
             {
@@ -39,29 +37,30 @@ namespace Ex05
         private void StartButton_Click(object sender, EventArgs e)
         {
             bool isAgasinstComputer = false;
-           string player1Name = textBox1.Text;
-           string player2Name = textBox2.Text;
-           int bordSize = (int)RowSIze.Value;
+            string player1Name = textBox1.Text;
+            string player2Name = textBox2.Text;
+            int boardSize = (int)RowSize.Value;
+
             if (!checkBox1.Checked)
             {
                 isAgasinstComputer = true;
                 player2Name = "Computer";
             }
-           Game newGame = new Game( player1Name, player2Name , isAgasinstComputer, bordSize );
-           this.Hide();
-           FormGame NewGameDisplay = new FormGame(newGame );
-           NewGameDisplay.ShowDialog();
-            this.Close();
 
+            Game newGame = new Game( player1Name, player2Name , isAgasinstComputer, boardSize );
+            this.Hide();
+            FormGame NewGameDisplay = new FormGame(newGame);
+            NewGameDisplay.ShowDialog();
+            this.Close();
         }
-        private void RowSIze_ValueChanged(object sender, EventArgs e)
+        private void RowSize_ValueChanged(object sender, EventArgs e)
         {
-            ColomSize.Value = RowSIze.Value;
+            ColumnSize.Value = RowSize.Value;
         }
-        private void ColomSize_ValueChanged(object sender, EventArgs e)
+        private void ColumnSize_ValueChanged(object sender, EventArgs e)
         {
             
-            RowSIze.Value = ColomSize.Value;
+            RowSize.Value = ColumnSize.Value;
         }
     }
 }

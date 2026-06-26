@@ -21,9 +21,9 @@ namespace Ex05
         {
             get { return r_Col; }
         }
-        public displayButton(int i_row, int i_col)
+        public displayButton(int i_Row, int i_col)
         {
-            r_Row = i_row; 
+            r_Row = i_Row; 
             r_Col = i_col;   
             this.Enabled = true;
             Width = k_cellSize;

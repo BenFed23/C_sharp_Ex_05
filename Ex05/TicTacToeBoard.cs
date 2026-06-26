@@ -5,8 +5,8 @@ namespace Ex05
 {
     internal class TicTacToeBoard
     {
-        public const int k_MinBoardSize = 3;
-        public const int k_MaxBoardSize = 9;
+        public const int k_MinBoardSize = 4;
+        public const int k_MaxBoardSize = 10;
       
         private readonly int r_BoardSize;
         private eCellState[,] m_Matrixboard;
@@ -20,7 +20,6 @@ namespace Ex05
       
         public eCellState GetCellValue(int i_MatrixRow, int i_MatrixColumn) 
         {
-
                 return m_Matrixboard[i_MatrixRow, i_MatrixColumn];
         }
         public void fillBoardWithBlankSpaces()

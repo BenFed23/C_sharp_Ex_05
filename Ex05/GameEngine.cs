@@ -111,6 +111,7 @@ namespace Ex05
                     }
                }
             }
+
             o_location.X = minCellRow;
             o_location.Y = minCellColumn;
             if(minRisk < i_GameBoard.GetLength() - 1)
@@ -127,7 +128,6 @@ namespace Ex05
 
         public static void RandomMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign, out Point o_location)
         {
-
             Random random = new Random();
             o_location = new Point();
             int startRow = random.Next(0, i_GameBoard.GetLength());
