@@ -12,6 +12,15 @@ namespace Ex05
         private readonly int k_cellSize = 60;
         private readonly int r_Row;
         private readonly int r_Col;
+        public int Row
+        {
+            get { return r_Row; }
+        }
+
+        public int Col
+        {
+            get { return r_Col; }
+        }
         public displayButton(int i_row, int i_col)
         {
             r_Row = i_row; 

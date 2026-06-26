@@ -101,14 +101,14 @@ namespace Ex05
         {
             get
             {
-                return $" Player 1 score: {r_Player1.Score}";
+                return $"{r_Player1.Name}: {r_Player1.Score}";
             }
         }
         public string Player2ScoreText
         {
             get
             {
-                return $" Player 2 score: {r_Player2.Score}";
+                return $"{r_Player2.Name}: {r_Player2.Score}";
             }
         }
         

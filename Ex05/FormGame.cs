@@ -50,10 +50,44 @@ namespace Ex05
                 }
             }
 
-            
-            int formWidth = (boardSize * k_ButtonSize) + (k_Margin * 3);
-            int formHeight = (boardSize * k_ButtonSize) + 100; 
+            int formWidth = (boardSize * k_ButtonSize) + (k_Margin * 2);
+            int formHeight = (boardSize * k_ButtonSize) + 60;
             this.ClientSize = new Size(formWidth, formHeight);
+
+            labelPlayer1Score.Text = m_gameboard.Player1ScoreText;
+            if (m_gameboard.IsAgainstComputer)
+            {
+                labelPlayer2Score.Text = "Computer: 0";
+            }
+            else
+            {
+                labelPlayer2Score.Text = m_gameboard.Player2ScoreText;
+            }
+
+            labelPlayer1Score.RightToLeft = RightToLeft.Yes;
+            labelPlayer2Score.RightToLeft = RightToLeft.No;
+
+            labelPlayer1Score.AutoSize = true;
+            labelPlayer2Score.AutoSize = true;
+
+            if (m_gameboard.currentPlayer.Sign == eCellState.X)
+            {
+                labelPlayer1Score.Font = new Font(labelPlayer1Score.Font, FontStyle.Bold);
+                labelPlayer2Score.Font = new Font(labelPlayer2Score.Font, FontStyle.Regular);
+            }
+            else
+            {
+                labelPlayer1Score.Font = new Font(labelPlayer1Score.Font, FontStyle.Regular);
+                labelPlayer2Score.Font = new Font(labelPlayer2Score.Font, FontStyle.Bold);
+            }
+
+            int labelsY = (boardSize * k_ButtonSize) + (k_Margin * 3);
+            int gapBetweenLabels = 15;
+            int totalLabelsWidth = labelPlayer1Score.Width + gapBetweenLabels + labelPlayer2Score.Width;
+            int startX = (formWidth - totalLabelsWidth) / 2;
+
+            labelPlayer1Score.Location = new Point(startX, labelsY);
+            labelPlayer2Score.Location = new Point(startX + labelPlayer1Score.Width + gapBetweenLabels, labelsY);
         }
         private displayButton[,] CreateBoard(int i_bordSize)
         {
@@ -70,7 +104,7 @@ namespace Ex05
             }
             else
             {
-                m_gameboard.MakeAHumanMove(clickedButtun.Location.X, clickedButtun.Location.Y);
+                m_gameboard.MakeAHumanMove(clickedButtun.Row, clickedButtun.Col);
                 MakeATurn(clickedButtun);
                 if (m_gameboard.IsAgainstComputer)
                 {
@@ -83,6 +117,7 @@ namespace Ex05
         private void MakeATurn(displayButton i_button)
         {
             i_button.draw(m_gameboard.currentPlayer.Sign);
+
             bool GameOver = (m_gameboard.CheckifThereIsAWinner()) || (m_gameboard.CheckIfThereIsATie());
             if (GameOver)
             {
