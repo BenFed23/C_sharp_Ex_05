@@ -110,14 +110,20 @@ namespace Ex05
         private void MakeATurn(displayButton i_button)
         {
             i_button.draw(m_gameboard.currentPlayer.Sign);
+            bool isWinner = m_gameboard.CheckifThereIsAWinner();
+            bool isTie = m_gameboard.CheckIfThereIsATie();
 
-            bool GameOver = (m_gameboard.CheckifThereIsAWinner()) || (m_gameboard.CheckIfThereIsATie());
-            if (GameOver)
+            if (isWinner || isTie)
             {
-                m_gameboard.AddPointsToCurrentPlayer();//check if there is a need for swich
+                if (isWinner)
+                {
+                    m_gameboard.AddPointsToCurrentPlayer();
+                }
+
                 labelPlayer1Score.Text = m_gameboard.Player1ScoreText;
                 labelPlayer2Score.Text = m_gameboard.Player2ScoreText;
-                askForRemach(GameOver);
+
+                askForRemach(isWinner || isTie);
             }
         }
         public void ResetBoard()
