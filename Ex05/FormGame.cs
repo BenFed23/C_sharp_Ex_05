@@ -54,6 +54,9 @@ namespace Ex05
             int formHeight = (boardSize * k_ButtonSize) + 60;
             this.ClientSize = new Size(formWidth, formHeight);
 
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.CenterToScreen();
+
             labelPlayer1Score.Text = m_gameboard.Player1ScoreText;
             labelPlayer2Score.Text = m_gameboard.Player2ScoreText;
 

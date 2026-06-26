@@ -15,6 +15,7 @@ namespace Ex05
        
         public FormGameSettings()
         {
+            this.StartPosition = FormStartPosition.CenterScreen;
             InitializeComponent();
         }
         private void FormGameSettings_Load(object sender, EventArgs e)
