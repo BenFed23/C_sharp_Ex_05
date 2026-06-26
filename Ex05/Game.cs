@@ -23,9 +23,11 @@ namespace Ex05
             m_Board = new TicTacToeBoard(i_BoardSize);
             m_CurrentPlayer = r_Player1;
         }
+
         public bool MakeAHumanMove(int i_Row, int i_Column)
         {
             bool isSuccessful = m_Board.FillCell(i_Row, i_Column, m_CurrentPlayer.Sign);
+        
             switchPlayer();
 
             return isSuccessful;
@@ -34,30 +36,31 @@ namespace Ex05
         public Point? MakeAComputerMove()
         {
             Point? computerChosenCell = GameEngine.ComputerMove(m_Board,m_CurrentPlayer.Sign);
+            
             switchPlayer();
 
             return computerChosenCell;
         }
-        public bool CheckifThereIsAWinner() 
-        {
-            bool winnerExist = true;
 
-            winnerExist = m_Engine.IsFullRowColumnOrDiagonalInBoard(m_Board);
-            if (winnerExist)
-            {
-                eCellState winningPlayerSign = m_CurrentPlayer.Sign;
-                Player winningPlayer = (winningPlayerSign == r_Player1.Sign) ? r_Player1 : r_Player2;
-                winningPlayer.Score++;
-            }
-           
-            return winnerExist;
+        public void AddPointToWinningPlayer()
+        {
+            eCellState winningPlayerSign = m_CurrentPlayer.Sign;
+            Player winningPlayer = (winningPlayerSign == r_Player1.Sign) ? r_Player1 : r_Player2;
+            winningPlayer.Score++;
         }
+
+        public bool IsWinnerExist()
+        {
+            return m_Engine.IsFullRowColumnOrDiagonalInBoard(m_Board);
+        }
+
         public bool CheckIfThereIsATie()
         {
             bool tie = m_Engine.isFullBoard(m_Board);
 
             return tie;
         }
+
         public void ResetLogicalBoard()
         {
             m_Board.fillBoardWithBlankSpaces();
@@ -68,10 +71,12 @@ namespace Ex05
         {
             m_CurrentPlayer = (m_CurrentPlayer == r_Player1) ? r_Player2 : r_Player1;
         }
+
         public int returnBoardLength()
         {
-            return m_Board.GetLength();
+            return m_Board.Size;
         }
+
         public Player currentPlayer 
         {
             get 
@@ -83,6 +88,7 @@ namespace Ex05
                 m_CurrentPlayer = value; 
             }
         }
+
         public bool IsAgainstComputer
         {
             get
@@ -94,6 +100,7 @@ namespace Ex05
                 m_IsAgainstComputer = value;
             }
         }
+
         public string Player1ScoreText
         {
             get
@@ -101,6 +108,7 @@ namespace Ex05
                 return $"{r_Player1.Name}: {r_Player1.Score}";
             }
         }
+
         public string Player2ScoreText
         {
             get

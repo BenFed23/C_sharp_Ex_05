@@ -22,6 +22,7 @@ namespace Ex05
         {
                 return m_Matrixboard[i_MatrixRow, i_MatrixColumn];
         }
+
         public void fillBoardWithBlankSpaces()
         {
             for (int row = 0; row < r_BoardSize; ++row)
@@ -33,9 +34,12 @@ namespace Ex05
             }
         }
 
-        public int GetLength()
+        public int Size
         {
-            return r_BoardSize;
+            get
+            {
+                return r_BoardSize;
+            }
         }
 
         public bool IsCellEmpty(int i_Row, int i_Col)

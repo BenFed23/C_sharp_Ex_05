@@ -21,10 +21,10 @@ namespace Ex05
         {
             get { return r_Col; }
         }
-        public displayButton(int i_Row, int i_col)
+        public displayButton(int i_Row, int i_Col)
         {
             r_Row = i_Row; 
-            r_Col = i_col;   
+            r_Col = i_Col;   
             this.Enabled = true;
             Width = k_cellSize;
             Height = k_cellSize;
@@ -37,6 +37,5 @@ namespace Ex05
                 this.Enabled = false;
             }
         }
-        
     }
 }
