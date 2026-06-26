@@ -55,14 +55,7 @@ namespace Ex05
             this.ClientSize = new Size(formWidth, formHeight);
 
             labelPlayer1Score.Text = m_gameboard.Player1ScoreText;
-            if (m_gameboard.IsAgainstComputer)
-            {
-                labelPlayer2Score.Text = "Computer: 0";
-            }
-            else
-            {
-                labelPlayer2Score.Text = m_gameboard.Player2ScoreText;
-            }
+            labelPlayer2Score.Text = m_gameboard.Player2ScoreText;
 
             labelPlayer1Score.RightToLeft = RightToLeft.Yes;
             labelPlayer2Score.RightToLeft = RightToLeft.No;
@@ -161,7 +154,7 @@ namespace Ex05
                 if (m_gameboard.CheckifThereIsAWinner())
                 {
                     
-                    messageText = string.Format("{0} Won!\nWould you like to play another round?", m_gameboard.currentPlayer.ToString());
+                    messageText = string.Format("{0} Won!\nWould you like to play another round?", m_gameboard.currentPlayer.Name);
                     messageTitle = "A Win!";
                 }
                 else if (m_gameboard.CheckIfThereIsATie())

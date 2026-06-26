@@ -32,7 +32,7 @@ namespace Ex05
             else 
             {
                 textBox2.Enabled = false;
-                textBox2.Text = "[Computer]";
+                textBox2.Text = "Computer";
             }
         }
         private void StartButton_Click(object sender, EventArgs e)
@@ -44,6 +44,7 @@ namespace Ex05
             if (!checkBox1.Checked)
             {
                 isAgasinstComputer = true;
+                player2Name = "Computer";
             }
            Game newGame = new Game( player1Name, player2Name , isAgasinstComputer, bordSize );
            this.Hide();
