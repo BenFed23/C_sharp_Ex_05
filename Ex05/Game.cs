@@ -30,13 +30,10 @@ namespace Ex05
 
             return isSucecfull;
         }
-        public void AddPointsToCurrentPlayer()
+        
+        public Point? MakeAComputreMove()
         {
-            m_CurrentPlayer.Score++;
-        }
-        public Point MakeAComputreMove()
-        {
-            Point computerChosenCell = GameEngine.ComputerMove(m_Board,m_CurrentPlayer.Sign);
+            Point? computerChosenCell = GameEngine.ComputerMove(m_Board,m_CurrentPlayer.Sign);
             switchPlayer();
 
             return computerChosenCell;
@@ -65,6 +62,7 @@ namespace Ex05
         public void ResetLogicalBoard()
         {
             m_Board.fillBoardWithBlankSpaces();
+            m_CurrentPlayer = r_Player1;
         }
         
         private void switchPlayer()

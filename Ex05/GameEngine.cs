@@ -150,11 +150,15 @@ namespace Ex05
             }
         }
 
-        public static Point ComputerMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign) 
+        public static Point? ComputerMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign) 
         {
-            Point location = new Point();
-            bool ismoveMade = MinDamage(i_GameBoard, i_ComputerSign,  out location);
+            Point location;
+            if (i_GameBoard.CheckIfBoardIsFull())
+            {
+                return null;
+            }
 
+            bool ismoveMade = MinDamage(i_GameBoard, i_ComputerSign, out location);
             if (!ismoveMade)
             {
                 RandomMove(i_GameBoard, i_ComputerSign, out location);

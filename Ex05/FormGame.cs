@@ -95,43 +95,64 @@ namespace Ex05
             {
                 return;
             }
-            else
+           
+            m_gameboard.MakeAHumanMove(clickedButtun.Row, clickedButtun.Col);
+            bool isGameOver = MakeATurn(clickedButtun);
+            if (!isGameOver && m_gameboard.IsAgainstComputer)
             {
-                m_gameboard.MakeAHumanMove(clickedButtun.Row, clickedButtun.Col);
-                MakeATurn(clickedButtun);
-                if (m_gameboard.IsAgainstComputer)
+                Point? location = m_gameboard.MakeAComputreMove();
+                if (location.HasValue)
                 {
-                    Point location = m_gameboard.MakeAComputreMove();
-                    displayButton computerButton = m_displayBoard[location.X, location.Y];
+                    displayButton computerButton = m_displayBoard[location.Value.X, location.Value.Y];
                     MakeATurn(computerButton);
                 }
             }
         }
-        private void MakeATurn(displayButton i_button)
+        private bool MakeATurn(displayButton i_button)
         {
             i_button.draw(m_gameboard.currentPlayer.Sign);
+
             bool isWinner = m_gameboard.CheckifThereIsAWinner();
             bool isTie = m_gameboard.CheckIfThereIsATie();
 
+            labelPlayer1Score.Text = m_gameboard.Player1ScoreText;
+            labelPlayer2Score.Text = m_gameboard.Player2ScoreText;
+
+            if (m_gameboard.currentPlayer.Sign == eCellState.X)
+            {
+                labelPlayer1Score.Font = new Font(labelPlayer1Score.Font, FontStyle.Bold);
+                labelPlayer2Score.Font = new Font(labelPlayer2Score.Font, FontStyle.Regular);
+            }
+            else
+            {
+                labelPlayer1Score.Font = new Font(labelPlayer1Score.Font, FontStyle.Regular);
+                labelPlayer2Score.Font = new Font(labelPlayer2Score.Font, FontStyle.Bold);
+            }
+
+            int boardSize = m_gameboard.returnBordlenght();
+            const int k_ButtonSize = 60;
+            const int k_Margin = 10;
+            int formWidth = (boardSize * k_ButtonSize) + (k_Margin * 3);
+            int labelsY = (boardSize * k_ButtonSize) + (k_Margin * 3);
+            int gapBetweenLabels = 15;
+
+            int totalLabelsWidth = labelPlayer1Score.Width + gapBetweenLabels + labelPlayer2Score.Width;
+            int startX = (formWidth - totalLabelsWidth) / 2;
+
+            labelPlayer1Score.Location = new Point(startX, labelsY);
+            labelPlayer2Score.Location = new Point(startX + labelPlayer1Score.Width + gapBetweenLabels, labelsY);
+
             if (isWinner || isTie)
             {
-                if (isWinner)
-                {
-                    m_gameboard.AddPointsToCurrentPlayer();
-                }
-
-                labelPlayer1Score.Text = m_gameboard.Player1ScoreText;
-                labelPlayer2Score.Text = m_gameboard.Player2ScoreText;
-
-                askForRemach(isWinner || isTie);
+                askForRemach(isWinner, isTie);
             }
+
+            return isWinner || isTie;
         }
         public void ResetBoard()
         {
-
             m_gameboard.ResetLogicalBoard();
             ResetPysicalBoard();
-
         }
         private void ResetPysicalBoard()
         {
@@ -149,40 +170,32 @@ namespace Ex05
             this.Close();
         }
 
-        private void askForRemach(bool i_GameOver)
+        private void askForRemach(bool i_IsWinner, bool i_IsTie)
         {
-            if (i_GameOver)
+            string messageText = string.Empty;
+            string messageTitle = string.Empty;
+
+
+            if (i_IsWinner)
             {
-                string messageText = string.Empty;
-                string messageTitle = string.Empty;
-
-
-                if (m_gameboard.CheckifThereIsAWinner())
-                {
-                    
-                    messageText = string.Format("{0} Won!\nWould you like to play another round?", m_gameboard.currentPlayer.Name);
-                    messageTitle = "A Win!";
-                }
-                else if (m_gameboard.CheckIfThereIsATie())
-                {
-                    messageText = "Tie!\nWould you like to play another round?";
-                    messageTitle = "A Tie!";
-                }
-                DialogResult result = MessageBox.Show(messageText, messageTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                if (result == DialogResult.Yes)
-                {
-                    ResetBoard();
-                }
-                else
-                {
-                    EndGame();
-                }
+                messageText = string.Format("{0} Won!\nWould you like to play another round?", m_gameboard.currentPlayer.Name);
+                messageTitle = "A Win!";
+            }
+            else if (i_IsTie)
+            {
+                messageText = "Tie!\nWould you like to play another round?";
+                messageTitle = "A Tie!";
             }
 
-
-
-
-
+            DialogResult result = MessageBox.Show(messageText, messageTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            if (result == DialogResult.Yes)
+            {
+                ResetBoard();
+            }
+            else
+            {
+                EndGame();
+            }
         }
     }
 }
