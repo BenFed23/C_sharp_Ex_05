@@ -12,7 +12,7 @@ namespace Ex05
 
         public bool IsFullRowColumnOrDiagonalInBoard(TicTacToeBoard i_Board)
         {
-            int boardSize = i_Board.GetLength();
+            int boardSize = i_Board.Size;
             bool isFullRow = false;
             bool isFullColumn = false;
             bool isFullLeftToRightDiagonal = false;
@@ -47,7 +47,7 @@ namespace Ex05
         private bool checkIfLineIsFull(TicTacToeBoard i_Board, int i_StartRowIndex, int i_StartColumnIndex, 
             int i_RowDirection, int i_ColumnDirection)
         {
-            int boardSize = i_Board.GetLength();
+            int boardSize = i_Board.Size;
             bool isLineFull = true;
             eCellState firstInLine = i_Board.GetCellValue(i_StartRowIndex, i_StartColumnIndex);
 
@@ -89,9 +89,9 @@ namespace Ex05
             int minCellRow = 0;
             int minCellColumn = 0;
 
-            for (int i = 0; i < i_GameBoard.GetLength(); i++)
+            for (int i = 0; i < i_GameBoard.Size; i++)
             {
-               for(int j = 0; j < i_GameBoard.GetLength(); j++)
+               for(int j = 0; j < i_GameBoard.Size; j++)
                {
                     int rowOCount = 0;
                     int columnOCount = 0;
@@ -111,9 +111,10 @@ namespace Ex05
                     }
                }
             }
+
             o_location.X = minCellRow;
             o_location.Y = minCellColumn;
-            if(minRisk < i_GameBoard.GetLength() - 1)
+            if(minRisk < i_GameBoard.Size - 1)
             {
                 i_GameBoard.FillCell(minCellRow, minCellColumn, i_ComputerSign);
             }
@@ -127,18 +128,17 @@ namespace Ex05
 
         public static void RandomMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign, out Point o_location)
         {
-
             Random random = new Random();
             o_location = new Point();
-            int startRow = random.Next(0, i_GameBoard.GetLength());
-            int startCol = random.Next(0, i_GameBoard.GetLength());
+            int startRow = random.Next(0, i_GameBoard.Size);
+            int startCol = random.Next(0, i_GameBoard.Size);
 
-            for (int i = 0; i < i_GameBoard.GetLength(); i++)
+            for (int i = 0; i < i_GameBoard.Size; i++)
             {
-                int row = (startRow + i) % i_GameBoard.GetLength();
-                for (int j = 0; j < i_GameBoard.GetLength(); j++)
+                int row = (startRow + i) % i_GameBoard.Size;
+                for (int j = 0; j < i_GameBoard.Size; j++)
                 {
-                    int col = (startCol + j) % i_GameBoard.GetLength();
+                    int col = (startCol + j) % i_GameBoard.Size;
                     if (i_GameBoard.IsCellEmpty(row, col))
                     {
                         o_location.X = row;
@@ -150,11 +150,15 @@ namespace Ex05
             }
         }
 
-        public static Point ComputerMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign) 
+        public static Point? ComputerMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign) 
         {
-            Point location = new Point();
-            bool ismoveMade = MinDamage(i_GameBoard, i_ComputerSign,  out location);
+            Point location;
+            if (i_GameBoard.CheckIfBoardIsFull())
+            {
+                return null;
+            }
 
+            bool ismoveMade = MinDamage(i_GameBoard, i_ComputerSign, out location);
             if (!ismoveMade)
             {
                 RandomMove(i_GameBoard, i_ComputerSign, out location);
@@ -170,7 +174,7 @@ namespace Ex05
             o_RowOCount = 0;
             o_ColumnOCount = 0;
             o_LeftDiagonalOCount = 0;
-            for (int k = 0; k < i_GameBoard.GetLength(); k++)
+            for (int k = 0; k < i_GameBoard.Size; k++)
             {
                 if (i_GameBoard.GetCellValue(i_ExtendIndex, k) == i_ComputerSign)
                 {

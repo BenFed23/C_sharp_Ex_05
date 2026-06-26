@@ -38,12 +38,12 @@ namespace Ex05
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.boardSizeLabel = new System.Windows.Forms.Label();
             this.RowsLabel = new System.Windows.Forms.Label();
-            this.RowSIze = new System.Windows.Forms.NumericUpDown();
-            this.ColomSize = new System.Windows.Forms.NumericUpDown();
+            this.RowSize = new System.Windows.Forms.NumericUpDown();
+            this.ColumnSize = new System.Windows.Forms.NumericUpDown();
             this.ColomsLabel = new System.Windows.Forms.Label();
             this.StartButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.RowSIze)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ColomSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RowSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ColumnSize)).BeginInit();
             this.SuspendLayout();
             // 
             // PlayersLabel
@@ -122,51 +122,51 @@ namespace Ex05
             this.RowsLabel.TabIndex = 7;
             this.RowsLabel.Text = "Rows: ";
             // 
-            // RowSIze
+            // RowSize
             // 
-            this.RowSIze.Location = new System.Drawing.Point(242, 220);
-            this.RowSIze.Maximum = new decimal(new int[] {
+            this.RowSize.Location = new System.Drawing.Point(242, 220);
+            this.RowSize.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.RowSIze.Minimum = new decimal(new int[] {
+            this.RowSize.Minimum = new decimal(new int[] {
             4,
             0,
             0,
             0});
-            this.RowSIze.Name = "RowSIze";
-            this.RowSIze.Size = new System.Drawing.Size(52, 26);
-            this.RowSIze.TabIndex = 8;
-            this.RowSIze.Value = new decimal(new int[] {
+            this.RowSize.Name = "RowSize";
+            this.RowSize.Size = new System.Drawing.Size(52, 26);
+            this.RowSize.TabIndex = 8;
+            this.RowSize.Value = new decimal(new int[] {
             4,
             0,
             0,
             0});
-            this.RowSIze.ValueChanged += new System.EventHandler(this.RowSIze_ValueChanged);
+            this.RowSize.ValueChanged += new System.EventHandler(this.RowSize_ValueChanged);
             // 
-            // ColomSize
+            // ColumnSize
             // 
-            this.ColomSize.Location = new System.Drawing.Point(108, 220);
-            this.ColomSize.Maximum = new decimal(new int[] {
+            this.ColumnSize.Location = new System.Drawing.Point(108, 220);
+            this.ColumnSize.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.ColomSize.Minimum = new decimal(new int[] {
+            this.ColumnSize.Minimum = new decimal(new int[] {
             4,
             0,
             0,
             0});
-            this.ColomSize.Name = "ColomSize";
-            this.ColomSize.Size = new System.Drawing.Size(50, 26);
-            this.ColomSize.TabIndex = 9;
-            this.ColomSize.Value = new decimal(new int[] {
+            this.ColumnSize.Name = "ColumnSize";
+            this.ColumnSize.Size = new System.Drawing.Size(50, 26);
+            this.ColumnSize.TabIndex = 9;
+            this.ColumnSize.Value = new decimal(new int[] {
             4,
             0,
             0,
             0});
-            this.ColomSize.ValueChanged += new System.EventHandler(this.ColomSize_ValueChanged);
+            this.ColumnSize.ValueChanged += new System.EventHandler(this.ColumnSize_ValueChanged);
             // 
             // ColomsLabel
             // 
@@ -194,8 +194,8 @@ namespace Ex05
             this.ClientSize = new System.Drawing.Size(344, 344);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.ColomsLabel);
-            this.Controls.Add(this.ColomSize);
-            this.Controls.Add(this.RowSIze);
+            this.Controls.Add(this.ColumnSize);
+            this.Controls.Add(this.RowSize);
             this.Controls.Add(this.RowsLabel);
             this.Controls.Add(this.boardSizeLabel);
             this.Controls.Add(this.textBox2);
@@ -210,8 +210,8 @@ namespace Ex05
             this.Name = "FormGameSettings";
             this.Text = "Game Settings";
             this.Load += new System.EventHandler(this.FormGameSettings_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.RowSIze)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ColomSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RowSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ColumnSize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -229,8 +229,8 @@ namespace Ex05
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label boardSizeLabel;
         private System.Windows.Forms.Label RowsLabel;
-        private System.Windows.Forms.NumericUpDown RowSIze;
-        private System.Windows.Forms.NumericUpDown ColomSize;
+        private System.Windows.Forms.NumericUpDown RowSize;
+        private System.Windows.Forms.NumericUpDown ColumnSize;
         private System.Windows.Forms.Label ColomsLabel;
         private System.Windows.Forms.Button StartButton;
     }
