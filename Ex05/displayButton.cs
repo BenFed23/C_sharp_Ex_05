@@ -11,24 +11,33 @@ namespace Ex05
     {
         private readonly int k_cellSize = 60;
         private readonly int r_Row;
-        private readonly int r_Col;
+        private readonly int r_Column;
+
         public int Row
         {
-            get { return r_Row; }
+            get
+            {
+                return r_Row; 
+            }
         }
 
         public int Col
         {
-            get { return r_Col; }
+            get 
+            {
+                return r_Column; 
+            }
         }
-        public displayButton(int i_Row, int i_Col)
+
+        public displayButton(int i_Row, int i_Column)
         {
             r_Row = i_Row; 
-            r_Col = i_Col;   
+            r_Column = i_Column;   
             this.Enabled = true;
             Width = k_cellSize;
             Height = k_cellSize;
         }
+
         public void draw(eCellState i_Sign)
         {
             if(this.Text == string.Empty)

@@ -18,12 +18,12 @@ namespace Ex05
             InitializeComponent();
         }
 
-        private void FormGameSettings_Load(object sender, EventArgs e)
+        private void formGameSettings_Load(object sender, EventArgs e)
         {
             
         }
 
-        private void PlayAgainstHumanChecked(object sender, EventArgs e)
+        private void playAgainstHumanChecked(object sender, EventArgs e)
         {
             if (checkBox1.Checked) 
             {
@@ -37,7 +37,7 @@ namespace Ex05
             }
         }
 
-        private void StartButton_Click(object sender, EventArgs e)
+        private void startButton_Click(object sender, EventArgs e)
         {
             string player1Name;
             string player2Name;
@@ -53,6 +53,7 @@ namespace Ex05
             o_Player1Name = textBox1.Text;
             o_IsAgainstComputer = !checkBox1.Checked;
             o_BoardSize = (int)RowSize.Value;
+
             if (o_IsAgainstComputer)
             {
                 o_Player2Name = "Computer";
@@ -73,12 +74,12 @@ namespace Ex05
             this.Close();
         }
 
-        private void RowSize_ValueChanged(object sender, EventArgs e)
+        private void rowSize_ValueChanged(object sender, EventArgs e)
         {
             ColumnSize.Value = RowSize.Value;
         }
 
-        private void ColumnSize_ValueChanged(object sender, EventArgs e)
+        private void columnSize_ValueChanged(object sender, EventArgs e)
         {    
             RowSize.Value = ColumnSize.Value;
         }

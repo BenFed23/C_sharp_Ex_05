@@ -13,23 +13,23 @@ namespace Ex05
 {
     public partial class FormGame : Form
     {
-        private Game m_GameBoard;
-        private displayButton[,] m_DisplayBoard;
+        private readonly Game r_GameBoard;
+        private readonly displayButton[,] r_DisplayBoard;
         private const int k_ButtonSize = 60;
         private const int k_Margin = 10;
 
         public FormGame(Game i_newGame)
         {
-            m_GameBoard = i_newGame;
-            m_DisplayBoard = CreateBoard(m_GameBoard.returnBoardLength());
+            r_GameBoard = i_newGame;
+            r_DisplayBoard = CreateBoard(r_GameBoard.returnBoardLength());
             InitializeComponent();
-            labelPlayer1Score.Text = m_GameBoard.Player1ScoreText;
-            labelPlayer2Score.Text = m_GameBoard.Player2ScoreText;
+            labelPlayer1Score.Text = r_GameBoard.Player1ScoreText;
+            labelPlayer2Score.Text = r_GameBoard.Player2ScoreText;
         }
 
-        private void GameForm_Load(object sender, EventArgs e)
+        private void gameForm_Load(object sender, EventArgs e)
         {
-            int boardSize = m_GameBoard.returnBoardLength();
+            int boardSize = r_GameBoard.returnBoardLength();
             int formWidth;
 
             initializeGameButtons(boardSize, k_ButtonSize, k_Margin);
@@ -39,19 +39,17 @@ namespace Ex05
 
         private void initializeGameButtons(int i_BoardSize, int i_ButtonSize, int i_Margin)
         {
-            m_DisplayBoard = CreateBoard(i_BoardSize);
-
             for (int i = 0; i < i_BoardSize; i++)
             {
                 for (int j = 0; j < i_BoardSize; j++)
                 {
-                    m_DisplayBoard[i, j] = new displayButton(i, j);
-                    m_DisplayBoard[i, j].Size = new Size(i_ButtonSize, i_ButtonSize);
-                    int posX = i_Margin + (j * i_ButtonSize);
-                    int posY = i_Margin + (i * i_ButtonSize);
-                    m_DisplayBoard[i, j].Location = new Point(posX, posY);
-                    m_DisplayBoard[i, j].Click += DisplayButtonClick;
-                    this.Controls.Add(m_DisplayBoard[i, j]);
+                    r_DisplayBoard[i, j] = new displayButton(i, j);
+                    r_DisplayBoard[i, j].Size = new Size(i_ButtonSize, i_ButtonSize);
+                    int positionX = i_Margin + (j * i_ButtonSize);
+                    int positionY = i_Margin + (i * i_ButtonSize);
+                    r_DisplayBoard[i, j].Location = new Point(positionX, positionY);
+                    r_DisplayBoard[i, j].Click += displayButtonClick;
+                    this.Controls.Add(r_DisplayBoard[i, j]);
                 }
             }
         }
@@ -62,28 +60,23 @@ namespace Ex05
             o_FormWidth = (i_BoardSize * i_ButtonSize) + (i_Margin * 2);
             this.ClientSize = new Size(o_FormWidth, formHeight);
             this.StartPosition = FormStartPosition.CenterScreen;
-
             this.CenterToScreen();
         }
 
         private void initializeScoreLabels()
         {
-            labelPlayer1Score.RightToLeft = RightToLeft.Yes;
-            labelPlayer2Score.RightToLeft = RightToLeft.No;
             labelPlayer1Score.AutoSize = true;
             labelPlayer2Score.AutoSize = true;
-
             updateScoreLabels();
         }
 
         private void updateScoreLabels()
         {
-            int boardSize = m_GameBoard.returnBoardLength();
+            int boardSize = r_GameBoard.returnBoardLength();
 
-            labelPlayer1Score.Text = m_GameBoard.Player1ScoreText;
-            labelPlayer2Score.Text = m_GameBoard.Player2ScoreText;
-
-            if (m_GameBoard.currentPlayer.Sign == eCellState.X)
+            labelPlayer1Score.Text = r_GameBoard.Player1ScoreText;
+            labelPlayer2Score.Text = r_GameBoard.Player2ScoreText;
+            if (r_GameBoard.currentPlayer.Sign == eCellState.X)
             {
                 labelPlayer1Score.Font = new Font(labelPlayer1Score.Font, FontStyle.Bold);
                 labelPlayer2Score.Font = new Font(labelPlayer2Score.Font, FontStyle.Regular);
@@ -95,13 +88,12 @@ namespace Ex05
             }
 
             int formWidth = (boardSize * k_ButtonSize) + (k_Margin * 3);
-            int labelsY = (boardSize * k_ButtonSize) + (k_Margin * 3);
+            int labelsYPosition = (boardSize * k_ButtonSize) + (k_Margin * 3);
             int gapBetweenLabels = 15;
             int totalLabelsWidth = labelPlayer1Score.Width + gapBetweenLabels + labelPlayer2Score.Width;
-            int startX = (formWidth - totalLabelsWidth) / 2;
-
-            labelPlayer1Score.Location = new Point(startX, labelsY);
-            labelPlayer2Score.Location = new Point(startX + labelPlayer1Score.Width + gapBetweenLabels, labelsY);
+            int startXPosition = (formWidth - totalLabelsWidth) / 2;
+            labelPlayer1Score.Location = new Point(startXPosition, labelsYPosition);
+            labelPlayer2Score.Location = new Point(startXPosition + labelPlayer1Score.Width + gapBetweenLabels, labelsYPosition);
         }
 
         private displayButton[,] CreateBoard(int i_BoardSize)
@@ -111,38 +103,38 @@ namespace Ex05
             return GameBoard;
         }
 
-        private void DisplayButtonClick(object sender, EventArgs e)
+        private void displayButtonClick(object sender, EventArgs e)
         {
             displayButton clickedButton = sender as displayButton;
 
             if (clickedButton.Text == string.Empty)
             {
-                m_GameBoard.MakeAHumanMove(clickedButton.Row, clickedButton.Col);
-                bool isGameOver = MakeATurn(clickedButton);
-                if (!isGameOver && m_GameBoard.IsAgainstComputer)
+                r_GameBoard.MakeAHumanMove(clickedButton.Row, clickedButton.Col);
+                bool isGameOver = makeATurn(clickedButton);
+                if (!isGameOver && r_GameBoard.IsAgainstComputer)
                 {
-                    Point? location = m_GameBoard.MakeAComputerMove();
+                    Point? location = r_GameBoard.MakeAComputerMove();
                     if (location.HasValue)
                     {
-                        displayButton computerButton = m_DisplayBoard[location.Value.X, location.Value.Y];
-                        MakeATurn(computerButton);
+                        displayButton computerButton = r_DisplayBoard[location.Value.X, location.Value.Y];
+                        makeATurn(computerButton);
                     }
                 }
             }
         }
 
-        private bool MakeATurn(displayButton i_Button)
+        private bool makeATurn(displayButton i_Button)
         {
-            int boardSize = m_GameBoard.returnBoardLength();
-            bool isWinner = m_GameBoard.IsWinnerExist();
-            bool isTie = m_GameBoard.CheckIfThereIsATie();
+            int boardSize = r_GameBoard.returnBoardLength();
+            bool isWinner = r_GameBoard.IsWinnerExist();
+            bool isTie = r_GameBoard.CheckIfThereIsATie();
 
             if (isWinner)
             {
-                m_GameBoard.AddPointToWinningPlayer();
+                r_GameBoard.AddPointToWinningPlayer();
             }
 
-            i_Button.draw(m_GameBoard.currentPlayer.Sign);
+            i_Button.draw(r_GameBoard.currentPlayer.Sign);
             updateScoreLabels();
             handleGameOverIfNeeded(isWinner, isTie);
 
@@ -157,16 +149,16 @@ namespace Ex05
             }
         }
 
-        public void ResetBoard()
+        private void resetBoard()
         {
-            m_GameBoard.ResetLogicalBoard();
-            ResetPhysicalBoard();
+            r_GameBoard.ResetLogicalBoard();
+            resetPhysicalBoard();
             updateScoreLabels();
         }
 
-        private void ResetPhysicalBoard()
+        private void resetPhysicalBoard()
         {
-            foreach (displayButton button in m_DisplayBoard)
+            foreach (displayButton button in r_DisplayBoard)
             {
                 if (button != null)
                 {
@@ -176,7 +168,7 @@ namespace Ex05
             }
         }
 
-        public void EndGame()
+        private void endGame()
         {
             this.Close();
         }
@@ -187,14 +179,14 @@ namespace Ex05
             string messageTitle = string.Empty;
 
             getGameOverMessageDetails(i_IsWinner, i_IsTie, out messageText, out messageTitle);
-            DialogResult result = MessageBox.Show(messageText, messageTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-            if (result == DialogResult.Yes)
+            DialogResult gameOverUserResult = MessageBox.Show(messageText, messageTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            if (gameOverUserResult == DialogResult.Yes)
             {
-                ResetBoard();
+                resetBoard();
             }
             else
             {
-                EndGame();
+                endGame();
             }
         }
 
@@ -205,7 +197,7 @@ namespace Ex05
 
             if (i_IsWinner)
             {
-                o_MessageText = string.Format("{0} Won!\nWould you like to play another round?", m_GameBoard.currentPlayer.Name);
+                o_MessageText = string.Format("The winner is {0}!\nWould you like to play another round?", r_GameBoard.currentPlayer.Name);
                 o_MessageTitle = "A Win!";
             }
             else if (i_IsTie)
