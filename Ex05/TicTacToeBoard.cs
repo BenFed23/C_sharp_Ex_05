@@ -7,7 +7,6 @@ namespace Ex05
     {
         public const int k_MinBoardSize = 4;
         public const int k_MaxBoardSize = 10;
-      
         private readonly int r_BoardSize;
         private eCellState[,] m_Matrixboard;
 
@@ -15,15 +14,15 @@ namespace Ex05
         {
             r_BoardSize = i_BoardSize;
             m_Matrixboard = new eCellState[r_BoardSize, r_BoardSize];
-            fillBoardWithBlankSpaces();
+            FillBoardWithBlankSpaces();
         }
       
         public eCellState GetCellValue(int i_MatrixRow, int i_MatrixColumn) 
         {
-                return m_Matrixboard[i_MatrixRow, i_MatrixColumn];
+            return m_Matrixboard[i_MatrixRow, i_MatrixColumn];
         }
 
-        public void fillBoardWithBlankSpaces()
+        public void FillBoardWithBlankSpaces()
         {
             for (int row = 0; row < r_BoardSize; ++row)
             {
@@ -58,16 +57,16 @@ namespace Ex05
         {
             bool successFill = false;
 
-            if (ValidLength(i_MatrixRow, i_MatrixCol) && IsCellEmpty(i_MatrixRow, i_MatrixCol))
+            if (isValidLength(i_MatrixRow, i_MatrixCol) && IsCellEmpty(i_MatrixRow, i_MatrixCol))
             {
                 m_Matrixboard[i_MatrixRow, i_MatrixCol] = i_PlayerSign;
                 successFill = true;
-            }
+            }   
 
             return successFill;
         }
       
-        public bool ValidLength(int i_Row, int i_Col)
+        private bool isValidLength(int i_Row, int i_Col)
         {
             bool isValid = true;
 

@@ -9,6 +9,7 @@ namespace Ex05
         private const int k_NoDirection = 0;
         private const int k_PositiveDirection = 1;
         private const int k_NegativeDirection = -1;
+        private const int k_InitialMaxRisk = 100;
 
         public bool IsFullRowColumnOrDiagonalInBoard(TicTacToeBoard i_Board)
         {
@@ -84,7 +85,6 @@ namespace Ex05
         {
             o_location = new Point();
             bool successMove = true;
-            const int k_InitialMaxRisk = 100;
             int minRisk = k_InitialMaxRisk;
             int minCellRow = 0;
             int minCellColumn = 0;
@@ -132,11 +132,12 @@ namespace Ex05
             o_location = new Point();
             int startRow = random.Next(0, i_GameBoard.Size);
             int startCol = random.Next(0, i_GameBoard.Size);
+            bool isMoveFound = false;
 
-            for (int i = 0; i < i_GameBoard.Size; i++)
+            for (int i = 0; i < i_GameBoard.Size && !isMoveFound; i++)
             {
                 int row = (startRow + i) % i_GameBoard.Size;
-                for (int j = 0; j < i_GameBoard.Size; j++)
+                for (int j = 0; j < i_GameBoard.Size && !isMoveFound; j++)
                 {
                     int col = (startCol + j) % i_GameBoard.Size;
                     if (i_GameBoard.IsCellEmpty(row, col))
@@ -144,7 +145,7 @@ namespace Ex05
                         o_location.X = row;
                         o_location.Y = col;
                         i_GameBoard.FillCell(row, col, i_ComputerSign);
-                        return; 
+                        isMoveFound = true;
                     }
                 }
             }
@@ -153,6 +154,7 @@ namespace Ex05
         public static Point? ComputerMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign) 
         {
             Point location;
+
             if (i_GameBoard.CheckIfBoardIsFull())
             {
                 return null;
@@ -174,6 +176,7 @@ namespace Ex05
             o_RowOCount = 0;
             o_ColumnOCount = 0;
             o_LeftDiagonalOCount = 0;
+
             for (int k = 0; k < i_GameBoard.Size; k++)
             {
                 if (i_GameBoard.GetCellValue(i_ExtendIndex, k) == i_ComputerSign)

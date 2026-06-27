@@ -7,8 +7,8 @@ namespace Ex05
 {
     public class Game
     {
-        private GameEngine m_Engine;
-        private TicTacToeBoard m_Board;
+        private readonly GameEngine r_GameEngine;
+        private readonly TicTacToeBoard r_Board;
         private readonly Player r_Player1;
         private readonly Player r_Player2;
         private Player m_CurrentPlayer;
@@ -16,17 +16,17 @@ namespace Ex05
 
         public Game(string i_Player1Name, string i_Player2Name, bool i_GameAgainstComputer, int i_BoardSize)
         {
-            m_Engine = new GameEngine();
+            r_GameEngine = new GameEngine();
             m_IsAgainstComputer = i_GameAgainstComputer;
             r_Player1 = new Player(eCellState.X, i_Player1Name);
             r_Player2 = new Player(eCellState.O, i_Player2Name);
-            m_Board = new TicTacToeBoard(i_BoardSize);
+            r_Board = new TicTacToeBoard(i_BoardSize);
             m_CurrentPlayer = r_Player1;
         }
 
         public bool MakeAHumanMove(int i_Row, int i_Column)
         {
-            bool isSuccessful = m_Board.FillCell(i_Row, i_Column, m_CurrentPlayer.Sign);
+            bool isSuccessful = r_Board.FillCell(i_Row, i_Column, m_CurrentPlayer.Sign);
         
             switchPlayer();
 
@@ -35,7 +35,7 @@ namespace Ex05
         
         public Point? MakeAComputerMove()
         {
-            Point? computerChosenCell = GameEngine.ComputerMove(m_Board,m_CurrentPlayer.Sign);
+            Point? computerChosenCell = GameEngine.ComputerMove(r_Board,m_CurrentPlayer.Sign);
             
             switchPlayer();
 
@@ -51,19 +51,19 @@ namespace Ex05
 
         public bool IsWinnerExist()
         {
-            return m_Engine.IsFullRowColumnOrDiagonalInBoard(m_Board);
+            return r_GameEngine.IsFullRowColumnOrDiagonalInBoard(r_Board);
         }
 
         public bool CheckIfThereIsATie()
         {
-            bool tie = m_Engine.isFullBoard(m_Board);
+            bool isTie = r_GameEngine.isFullBoard(r_Board);
 
-            return tie;
+            return isTie;
         }
 
         public void ResetLogicalBoard()
         {
-            m_Board.fillBoardWithBlankSpaces();
+            r_Board.FillBoardWithBlankSpaces();
             m_CurrentPlayer = r_Player1;
         }
         
@@ -72,9 +72,9 @@ namespace Ex05
             m_CurrentPlayer = (m_CurrentPlayer == r_Player1) ? r_Player2 : r_Player1;
         }
 
-        public int returnBoardLength()
+        public int ReturnBoardLength()
         {
-            return m_Board.Size;
+            return r_Board.Size;
         }
 
         public Player currentPlayer 
