@@ -81,7 +81,7 @@ namespace Ex05
             this.checkBox1.Size = new System.Drawing.Size(22, 21);
             this.checkBox1.TabIndex = 3;
             this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.PlayAgainstHumanChecked);
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.playAgainstHumanChecked);
             // 
             // label3
             // 
@@ -143,7 +143,7 @@ namespace Ex05
             0,
             0,
             0});
-            this.RowSize.ValueChanged += new System.EventHandler(this.RowSize_ValueChanged);
+            this.RowSize.ValueChanged += new System.EventHandler(this.rowSize_ValueChanged);
             // 
             // ColumnSize
             // 
@@ -166,7 +166,7 @@ namespace Ex05
             0,
             0,
             0});
-            this.ColumnSize.ValueChanged += new System.EventHandler(this.ColumnSize_ValueChanged);
+            this.ColumnSize.ValueChanged += new System.EventHandler(this.columnSize_ValueChanged);
             // 
             // ColomsLabel
             // 
@@ -185,7 +185,7 @@ namespace Ex05
             this.StartButton.TabIndex = 11;
             this.StartButton.Text = "Start! ";
             this.StartButton.UseVisualStyleBackColor = true;
-            this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
+            this.StartButton.Click += new System.EventHandler(this.startButton_Click);
             // 
             // FormGameSettings
             // 
@@ -209,7 +209,7 @@ namespace Ex05
             this.MinimizeBox = false;
             this.Name = "FormGameSettings";
             this.Text = "Game Settings";
-            this.Load += new System.EventHandler(this.FormGameSettings_Load);
+            this.Load += new System.EventHandler(this.formGameSettings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.RowSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ColumnSize)).EndInit();
             this.ResumeLayout(false);

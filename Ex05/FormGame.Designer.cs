@@ -59,7 +59,7 @@
             this.Controls.Add(this.labelPlayer1Score);
             this.Name = "FormGame";
             this.Text = "GameForm";
-            this.Load += new System.EventHandler(this.GameForm_Load);
+            this.Load += new System.EventHandler(this.gameForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

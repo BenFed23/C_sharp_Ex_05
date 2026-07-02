@@ -21,7 +21,7 @@ namespace Ex05
         public FormGame(Game i_newGame)
         {
             r_GameBoard = i_newGame;
-            r_DisplayBoard = CreateBoard(r_GameBoard.returnBoardLength());
+            r_DisplayBoard = CreateBoard(r_GameBoard.ReturnBoardLength());
             InitializeComponent();
             labelPlayer1Score.Text = r_GameBoard.Player1ScoreText;
             labelPlayer2Score.Text = r_GameBoard.Player2ScoreText;
@@ -29,7 +29,7 @@ namespace Ex05
 
         private void gameForm_Load(object sender, EventArgs e)
         {
-            int boardSize = r_GameBoard.returnBoardLength();
+            int boardSize = r_GameBoard.ReturnBoardLength();
             int formWidth;
 
             initializeGameButtons(boardSize, k_ButtonSize, k_Margin);
@@ -72,7 +72,7 @@ namespace Ex05
 
         private void updateScoreLabels()
         {
-            int boardSize = r_GameBoard.returnBoardLength();
+            int boardSize = r_GameBoard.ReturnBoardLength();
 
             labelPlayer1Score.Text = r_GameBoard.Player1ScoreText;
             labelPlayer2Score.Text = r_GameBoard.Player2ScoreText;
@@ -125,7 +125,7 @@ namespace Ex05
 
         private bool makeATurn(displayButton i_Button)
         {
-            int boardSize = r_GameBoard.returnBoardLength();
+            int boardSize = r_GameBoard.ReturnBoardLength();
             bool isWinner = r_GameBoard.IsWinnerExist();
             bool isTie = r_GameBoard.CheckIfThereIsATie();
 
