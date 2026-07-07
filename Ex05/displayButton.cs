@@ -41,7 +41,6 @@ namespace Ex05
             {
                 Text = i_Sign.ToString();
                 Enabled = false;
-                Refresh();
             }
         }
     }

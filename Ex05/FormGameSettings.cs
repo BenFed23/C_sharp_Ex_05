@@ -37,7 +37,14 @@ namespace Ex05
             int boardSize;
 
             getGameSettingsInputs(out player1Name, out player2Name, out isAgainstComputer, out boardSize);
-            launchGame(player1Name, player2Name, isAgainstComputer, boardSize);
+            if (player1Name.Trim().Length == 0 || player2Name.Trim().Length == 0)
+            {
+                MessageBox.Show("Please enter valid names for both players.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                launchGame(player1Name, player2Name, isAgainstComputer, boardSize);
+            }
         }
 
         private void getGameSettingsInputs(out string o_Player1Name, out string o_Player2Name, out bool o_IsAgainstComputer, out int o_BoardSize)
