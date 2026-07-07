@@ -27,8 +27,38 @@ namespace Ex05
             r_GameBoard = i_newGame;
             r_DisplayBoard = CreateBoard(r_GameBoard.ReturnBoardLength());
             InitializeComponent();
+            registerToGameEvents();
             labelPlayer1Score.Text = player1ScoreText();
             labelPlayer2Score.Text = player2ScoreText();
+        }
+
+        private void registerToGameEvents()
+        {
+            r_GameBoard.CellChanged += board_CellChanged;
+            r_GameBoard.TurnOrScoreChanged += board_TurnOrScoreChanged;
+            r_GameBoard.GameEndedWithWinner += board_GameEndedWithWinner;
+            r_GameBoard.GameEndedWithTie += board_GameEndedWithTie;
+        }
+
+        private void board_CellChanged(int i_Row, int i_Col, eCellState i_Sign)
+        {
+            r_DisplayBoard[i_Row, i_Col].draw(i_Sign);
+        }
+
+        private void board_TurnOrScoreChanged()
+        {
+            updateScoreLabels();
+        }
+
+        private void board_GameEndedWithWinner(string i_WinnerName)
+        {
+            string messageText = string.Format("The winner is {0}!\nWould you like to play another round?", i_WinnerName);
+            askForRematch(messageText, "A Win!");
+        }
+
+        private void board_GameEndedWithTie()
+        {
+            askForRematch("Tie!\nWould you like to play another round?", "A Tie!");
         }
 
         private void gameForm_Load(object sender, EventArgs e)
@@ -101,9 +131,7 @@ namespace Ex05
 
         private displayButton[,] CreateBoard(int i_BoardSize)
         {
-            displayButton[,] GameBoard = new displayButton[i_BoardSize, i_BoardSize];
-
-            return GameBoard;
+            return new displayButton[i_BoardSize, i_BoardSize];
         }
 
         private void displayButtonClick(object sender, EventArgs e)
@@ -112,48 +140,7 @@ namespace Ex05
 
             if (clickedButton.Text == string.Empty)
             {
-                r_GameBoard.MakeAHumanMove(clickedButton.Col, clickedButton.Row);
-                bool isGameOver = makeATurn(clickedButton);
-                if (!isGameOver && r_GameBoard.IsAgainstComputer)
-                {
-                    Point? location = r_GameBoard.MakeAComputerMove();
-                    if (location.HasValue)
-                    {
-                        displayButton computerButton = r_DisplayBoard[location.Value.X, location.Value.Y];
-                        makeATurn(computerButton);
-                    }
-                }
-            }
-        }
-
-        private bool makeATurn(displayButton i_Button)
-        {
-            i_Button.draw(r_GameBoard.currentPlayer.Sign);
-
-            int boardSize = r_GameBoard.ReturnBoardLength();
-            bool isWinner = r_GameBoard.IsWinnerExist();
-            bool isTie = r_GameBoard.CheckIfThereIsATie();
-
-            if (isWinner)
-            {
-                r_GameBoard.AddPointToWinningPlayer();
-            }
-
-            updateScoreLabels();
-            handleGameOverIfNeeded(isWinner, isTie);
-            if (!isWinner && !isTie)
-            {
-                r_GameBoard.SwitchPlayer();
-            }
-
-            return isWinner || isTie;
-        }
-
-        private void handleGameOverIfNeeded(bool i_IsWinner, bool i_IsTie)
-        {
-            if (i_IsWinner || i_IsTie)
-            {
-                askForRematch(i_IsWinner, i_IsTie);
+                r_GameBoard.PlayRound(clickedButton.Row, clickedButton.Col);
             }
         }
 
@@ -181,13 +168,9 @@ namespace Ex05
             this.Close();
         }
 
-        private void askForRematch(bool i_IsWinner, bool i_IsTie)
+        private void askForRematch(string i_MessageText, string i_MessageTitle)
         {
-            string messageText = string.Empty;
-            string messageTitle = string.Empty;
-
-            getGameOverMessageDetails(i_IsWinner, i_IsTie, out messageText, out messageTitle);
-            DialogResult gameOverUserResult = MessageBox.Show(messageText, messageTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            DialogResult gameOverUserResult = MessageBox.Show(i_MessageText, i_MessageTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (gameOverUserResult == DialogResult.Yes)
             {
                 resetBoard();
@@ -198,34 +181,13 @@ namespace Ex05
             }
         }
 
-        private void getGameOverMessageDetails(bool i_IsWinner, bool i_IsTie, out string o_MessageText, out string o_MessageTitle)
-        {
-            o_MessageText = string.Empty;
-            o_MessageTitle = string.Empty;
-
-            if (i_IsWinner)
-            {
-                string winnerName = (r_GameBoard.currentPlayer.Sign == eCellState.X) ? r_GameBoard.GetPlayer2Name() : r_GameBoard.GetPlayer1Name();
-                o_MessageText = string.Format("The winner is {0}!\nWould you like to play another round?", winnerName);
-                o_MessageTitle = "A Win!";
-            }
-            else if (i_IsTie)
-            {
-                o_MessageText = "Tie!\nWould you like to play another round?";
-                o_MessageTitle = "A Tie!";
-            }
-        }
         private string player1ScoreText()
         {
-            string messege = $"{r_GameBoard.GetPlayer1Name()}: {r_GameBoard.GetPlayer1Score()}"; ;
-
-            return messege;
+            return $"{r_GameBoard.GetPlayer1Name()}: {r_GameBoard.GetPlayer1Score()}"; 
         }
         private string player2ScoreText()
         {
-            string messege = $"{r_GameBoard.GetPlayer2Name()}: {r_GameBoard.GetPlayer2Score()}"; ;
-
-            return messege;
+            return $"{r_GameBoard.GetPlayer2Name()}: {r_GameBoard.GetPlayer2Score()}";
         }
     }
 }

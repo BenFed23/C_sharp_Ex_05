@@ -13,6 +13,11 @@ namespace Ex05
         private Player m_CurrentPlayer;
         private bool m_IsAgainstComputer;
 
+        public event Action<int, int, eCellState> CellChanged;
+        public event Action<string> GameEndedWithWinner;
+        public event Action GameEndedWithTie;
+        public event Action TurnOrScoreChanged;
+
         public Game(string i_Player1Name, string i_Player2Name, bool i_GameAgainstComputer, int i_BoardSize)
         {
             r_GameEngine = new GameEngine();
@@ -23,16 +28,61 @@ namespace Ex05
             m_CurrentPlayer = r_Player1;
         }
 
-        public bool MakeAHumanMove(int i_Row, int i_Column)
+        public void PlayRound(int i_Row, int i_Column)
         {
-            bool isSuccessful = r_Board.FillCell(i_Row, i_Column, m_CurrentPlayer.Sign);
+            if (r_Board.FillCell(i_Row, i_Column, m_CurrentPlayer.Sign))
+            {
+                bool isGameOver = handlePostMoveActions(i_Row, i_Column);
+                if (!isGameOver && m_IsAgainstComputer)
+                {
+                    Point? computerMove = MakeAComputerMove();
+                    if (computerMove.HasValue)
+                    {
+                        r_Board.FillCell(computerMove.Value.Y, computerMove.Value.X, m_CurrentPlayer.Sign);
+                        handlePostMoveActions(computerMove.Value.Y, computerMove.Value.X);
+                    }
 
-            return isSuccessful;
+                }
+            }
+        }
+
+        private bool handlePostMoveActions(int i_Row, int i_Column)
+        {
+            CellChanged?.Invoke(i_Row, i_Column, m_CurrentPlayer.Sign);
+            bool isGameOver = checkGameOverStates();
+            if (!isGameOver)
+            {
+                SwitchPlayer();
+                TurnOrScoreChanged?.Invoke();
+            }
+
+            return isGameOver;
+        }
+
+        private bool checkGameOverStates()
+        {
+            bool isGameOver = false;
+
+            if (IsWinnerExist())
+            {
+                AddPointToWinningPlayer();
+                TurnOrScoreChanged?.Invoke();
+                Player realWinner = (m_CurrentPlayer == r_Player1) ? r_Player2 : r_Player1;
+                GameEndedWithWinner?.Invoke(realWinner.Name);
+                isGameOver = true;
+            }
+            else if (CheckIfThereIsATie())
+            {
+                GameEndedWithTie?.Invoke();
+                isGameOver = true;
+            }
+
+            return isGameOver;
         }
         
         public Point? MakeAComputerMove()
         {
-            Point? computerChosenCell = GameEngine.ComputerMove(r_Board,m_CurrentPlayer.Sign);
+            Point? computerChosenCell = r_GameEngine.ComputerMove(r_Board,m_CurrentPlayer.Sign);
        
             return computerChosenCell;
         }
@@ -48,9 +98,7 @@ namespace Ex05
         }
         public bool CheckIfThereIsATie()
         {
-            bool isTie = r_GameEngine.isFullBoard(r_Board);
-
-            return isTie;
+            return r_GameEngine.isFullBoard(r_Board);
         }
 
         public void ResetLogicalBoard()
@@ -78,6 +126,7 @@ namespace Ex05
                 m_CurrentPlayer = value; 
             }
         }
+
         public bool IsAgainstComputer
         {
             get
@@ -89,18 +138,22 @@ namespace Ex05
                 m_IsAgainstComputer = value;
             }
         }
+
         public string GetPlayer1Name()
         {
            return r_Player1.Name;
         }
+
         public string GetPlayer2Name()
         {
             return r_Player2.Name;
         }
+
         public int GetPlayer1Score()
         {
             return r_Player1.Score; 
         }
+
         public int GetPlayer2Score()
         {
             return r_Player2.Score;

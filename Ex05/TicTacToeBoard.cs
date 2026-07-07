@@ -43,14 +43,7 @@ namespace Ex05
 
         public bool IsCellEmpty(int i_Row, int i_Col)
         {
-            bool isEmpty = false;
-
-            if (m_Matrixboard[i_Row, i_Col] == eCellState.Empty)
-            {
-                isEmpty = true;
-            }
-
-            return isEmpty;
+            return m_Matrixboard[i_Row, i_Col] == eCellState.Empty;
         }
       
         public bool FillCell(int i_MatrixRow, int i_MatrixCol, eCellState i_PlayerSign)
@@ -68,15 +61,7 @@ namespace Ex05
       
         private bool isValidLength(int i_Row, int i_Col)
         {
-            bool isValid = true;
-
-            if ((i_Row >= r_BoardSize) || (i_Col >= r_BoardSize) || (i_Row < 0) || (i_Col < 0)) 
-            {
-                isValid = false;
-                
-            }
-            
-            return isValid;
+            return (i_Row < r_BoardSize && i_Col < r_BoardSize && i_Row >= 0 && i_Col >= 0);
         }
 
         public bool CheckIfBoardIsFull()

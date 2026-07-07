@@ -14,7 +14,7 @@ namespace Ex05
     {
         public FormGameSettings()
         {
-            this.StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterScreen;
             InitializeComponent();
         }
 
@@ -25,16 +25,8 @@ namespace Ex05
 
         private void playAgainstHumanChecked(object sender, EventArgs e)
         {
-            if (checkBox1.Checked) 
-            {
-                textBox2.Enabled = true;
-                textBox2.Text = string.Empty;
-            }
-            else 
-            {
-                textBox2.Enabled = false;
-                textBox2.Text = "Computer";
-            }
+            textBox2.Enabled = checkBox1.Checked;
+            textBox2.Text = checkBox1.Checked ? string.Empty : "Computer";
         }
 
         private void startButton_Click(object sender, EventArgs e)
@@ -53,35 +45,33 @@ namespace Ex05
             o_Player1Name = textBox1.Text;
             o_IsAgainstComputer = !checkBox1.Checked;
             o_BoardSize = (int)RowSize.Value;
-
-            if (o_IsAgainstComputer)
-            {
-                o_Player2Name = "Computer";
-            }
-            else
-            {
-                o_Player2Name = textBox2.Text;
-            }
+            o_Player2Name = o_IsAgainstComputer ? "Computer" : textBox2.Text;
         }
 
         private void launchGame(string i_Player1Name, string i_Player2Name, bool i_IsAgainstComputer, int i_BoardSize)
         {
             Game newGame = new Game(i_Player1Name, i_Player2Name, i_IsAgainstComputer, i_BoardSize);
 
-            this.Hide();
+            Hide();
             FormGame newGameDisplay = new FormGame(newGame);
             newGameDisplay.ShowDialog();
-            this.Close();
+            Close();
         }
 
         private void rowSize_ValueChanged(object sender, EventArgs e)
         {
-            ColumnSize.Value = RowSize.Value;
+            if (ColumnSize.Value != RowSize.Value)
+            {
+                ColumnSize.Value = RowSize.Value;
+            }
         }
 
         private void columnSize_ValueChanged(object sender, EventArgs e)
-        {    
-            RowSize.Value = ColumnSize.Value;
+        {
+            if (RowSize.Value != ColumnSize.Value)
+            {
+                RowSize.Value = ColumnSize.Value;
+            }
         }
     }
 }

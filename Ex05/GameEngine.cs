@@ -81,10 +81,9 @@ namespace Ex05
             return i_Board.CheckIfBoardIsFull();
         }
 
-        public static bool MinDamage(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign,  out Point o_location )
+        public bool MinDamage(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign,  out Point o_location )
         {
             o_location = new Point();
-            bool successMove = true;
             int minRisk = k_InitialMaxRisk;
             int minCellRow = 0;
             int minCellColumn = 0;
@@ -114,19 +113,11 @@ namespace Ex05
 
             o_location.X = minCellColumn;
             o_location.Y = minCellRow;
-            if(minRisk < i_GameBoard.Size - 1)
-            {
-                i_GameBoard.FillCell(minCellRow, minCellColumn, i_ComputerSign);
-            }
-            else
-            {
-                successMove = false;
-            }
 
-            return successMove;
+            return minRisk < i_GameBoard.Size - 1;
         }
 
-        public static void RandomMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign, out Point o_location)
+        public void RandomMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign, out Point o_location)
         {
             Random random = new Random();
             o_location = new Point();
@@ -144,14 +135,13 @@ namespace Ex05
                     {
                         o_location.X = col;
                         o_location.Y = row;
-                        i_GameBoard.FillCell(row, col, i_ComputerSign);
                         isMoveFound = true;
                     }
                 }
             }
         }
 
-        public static Point? ComputerMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign) 
+        public Point? ComputerMove(TicTacToeBoard i_GameBoard, eCellState i_ComputerSign) 
         {
             Point location;
 

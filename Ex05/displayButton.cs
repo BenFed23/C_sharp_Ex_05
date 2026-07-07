@@ -9,7 +9,6 @@ namespace Ex05
 {
     public class displayButton : Button
     {
-        private const int k_cellSize = 60;
         private readonly int r_Row;
         private readonly int r_Column;
 
@@ -33,17 +32,15 @@ namespace Ex05
         {
             r_Row = i_Row; 
             r_Column = i_Column;   
-            this.Enabled = true;
-            Width = k_cellSize;
-            Height = k_cellSize;
+            Enabled = true;
         }
 
         public void draw(eCellState i_Sign)
         {
-            if(this.Text == string.Empty)
+            if (Text == string.Empty)
             {
-                this.Text = i_Sign.ToString();
-                this.Enabled = false;
+                Text = i_Sign.ToString();
+                Enabled = false;
             }
         }
     }
