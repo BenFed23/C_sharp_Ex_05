@@ -8,18 +8,18 @@ namespace Ex05
         public const int k_MinBoardSize = 4;
         public const int k_MaxBoardSize = 10;
         private readonly int r_BoardSize;
-        private eCellState[,] m_Matrixboard;
+        private eCellState[,] m_MatrixBoard;
 
         public TicTacToeBoard(int i_BoardSize)
         {
             r_BoardSize = i_BoardSize;
-            m_Matrixboard = new eCellState[r_BoardSize, r_BoardSize];
+            m_MatrixBoard = new eCellState[r_BoardSize, r_BoardSize];
             FillBoardWithBlankSpaces();
         }
       
         public eCellState GetCellValue(int i_MatrixRow, int i_MatrixColumn) 
         {
-            return m_Matrixboard[i_MatrixRow, i_MatrixColumn];
+            return m_MatrixBoard[i_MatrixRow, i_MatrixColumn];
         }
 
         public void FillBoardWithBlankSpaces()
@@ -28,7 +28,7 @@ namespace Ex05
             {
                 for (int col = 0; col < r_BoardSize; ++col)
                 {
-                    m_Matrixboard[row, col] = eCellState.Empty;
+                    m_MatrixBoard[row, col] = eCellState.Empty;
                 }
             }
         }
@@ -43,7 +43,7 @@ namespace Ex05
 
         public bool IsCellEmpty(int i_Row, int i_Col)
         {
-            return m_Matrixboard[i_Row, i_Col] == eCellState.Empty;
+            return m_MatrixBoard[i_Row, i_Col] == eCellState.Empty;
         }
       
         public bool FillCell(int i_MatrixRow, int i_MatrixCol, eCellState i_PlayerSign)
@@ -52,7 +52,7 @@ namespace Ex05
 
             if (isValidLength(i_MatrixRow, i_MatrixCol) && IsCellEmpty(i_MatrixRow, i_MatrixCol))
             {
-                m_Matrixboard[i_MatrixRow, i_MatrixCol] = i_PlayerSign;
+                m_MatrixBoard[i_MatrixRow, i_MatrixCol] = i_PlayerSign;
                 successFill = true;
             }   
 
@@ -72,7 +72,7 @@ namespace Ex05
             {
                 for(int j = 0; j < r_BoardSize; ++j)
                 {
-                    if (m_Matrixboard[i,j] == eCellState.Empty)
+                    if (m_MatrixBoard[i,j] == eCellState.Empty)
                     {
                         isBoardFull = false;
                         break;

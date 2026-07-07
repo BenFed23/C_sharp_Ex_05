@@ -48,9 +48,8 @@ namespace Ex05
 
         private bool handlePostMoveActions(int i_Row, int i_Column)
         {
-            bool isGameOver = checkGameOverStates();
-
             onCellChanged(i_Row, i_Column, m_CurrentPlayer.Sign);
+            bool isGameOver = checkGameOverStates();
             if (!isGameOver)
             {
                 switchPlayer();
