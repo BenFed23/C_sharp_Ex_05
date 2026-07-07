@@ -112,8 +112,8 @@ namespace Ex05
                }
             }
 
-            o_location.X = minCellRow;
-            o_location.Y = minCellColumn;
+            o_location.X = minCellColumn;
+            o_location.Y = minCellRow;
             if(minRisk < i_GameBoard.Size - 1)
             {
                 i_GameBoard.FillCell(minCellRow, minCellColumn, i_ComputerSign);
@@ -142,8 +142,8 @@ namespace Ex05
                     int col = (startCol + j) % i_GameBoard.Size;
                     if (i_GameBoard.IsCellEmpty(row, col))
                     {
-                        o_location.X = row;
-                        o_location.Y = col;
+                        o_location.X = col;
+                        o_location.Y = row;
                         i_GameBoard.FillCell(row, col, i_ComputerSign);
                         isMoveFound = true;
                     }

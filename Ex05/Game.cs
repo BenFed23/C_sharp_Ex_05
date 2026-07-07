@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 
 namespace Ex05
 {
@@ -27,8 +26,6 @@ namespace Ex05
         public bool MakeAHumanMove(int i_Row, int i_Column)
         {
             bool isSuccessful = r_Board.FillCell(i_Row, i_Column, m_CurrentPlayer.Sign);
-        
-            switchPlayer();
 
             return isSuccessful;
         }
@@ -36,24 +33,19 @@ namespace Ex05
         public Point? MakeAComputerMove()
         {
             Point? computerChosenCell = GameEngine.ComputerMove(r_Board,m_CurrentPlayer.Sign);
-            
-            switchPlayer();
-
+       
             return computerChosenCell;
         }
 
         public void AddPointToWinningPlayer()
         {
-            eCellState winningPlayerSign = m_CurrentPlayer.Sign;
-            Player winningPlayer = (winningPlayerSign == r_Player1.Sign) ? r_Player1 : r_Player2;
+            Player winningPlayer = (m_CurrentPlayer == r_Player1) ? r_Player2 : r_Player1;
             winningPlayer.Score++;
         }
-
         public bool IsWinnerExist()
         {
             return r_GameEngine.IsFullRowColumnOrDiagonalInBoard(r_Board);
         }
-
         public bool CheckIfThereIsATie()
         {
             bool isTie = r_GameEngine.isFullBoard(r_Board);
@@ -66,12 +58,10 @@ namespace Ex05
             r_Board.FillBoardWithBlankSpaces();
             m_CurrentPlayer = r_Player1;
         }
-        
-        private void switchPlayer()
+        public void SwitchPlayer()
         {
             m_CurrentPlayer = (m_CurrentPlayer == r_Player1) ? r_Player2 : r_Player1;
         }
-
         public int ReturnBoardLength()
         {
             return r_Board.Size;
@@ -88,7 +78,6 @@ namespace Ex05
                 m_CurrentPlayer = value; 
             }
         }
-
         public bool IsAgainstComputer
         {
             get
@@ -100,21 +89,21 @@ namespace Ex05
                 m_IsAgainstComputer = value;
             }
         }
-
-        public string Player1ScoreText
+        public string GetPlayer1Name()
         {
-            get
-            {
-                return $"{r_Player1.Name}: {r_Player1.Score}";
-            }
+           return r_Player1.Name;
         }
-
-        public string Player2ScoreText
+        public string GetPlayer2Name()
         {
-            get
-            {
-                return $"{r_Player2.Name}: {r_Player2.Score}";
-            }
+            return r_Player2.Name;
         }
+        public int GetPlayer1Score()
+        {
+            return r_Player1.Score; 
+        }
+        public int GetPlayer2Score()
+        {
+            return r_Player2.Score;
+        } 
     } 
 }

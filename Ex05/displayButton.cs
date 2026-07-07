@@ -9,7 +9,7 @@ namespace Ex05
 {
     public class displayButton : Button
     {
-        private readonly int k_cellSize = 60;
+        private const int k_cellSize = 60;
         private readonly int r_Row;
         private readonly int r_Column;
 

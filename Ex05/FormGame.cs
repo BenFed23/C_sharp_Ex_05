@@ -17,14 +17,18 @@ namespace Ex05
         private readonly displayButton[,] r_DisplayBoard;
         private const int k_ButtonSize = 60;
         private const int k_Margin = 10;
+        private const int k_GapBetweenLabels = 15;
+        private const int k_WidthMarginCorrection = 3;
+        private const int k_HeightMarginCorrection = 2;
+        private const int k_FormTitleBarAndBordersHeight = 60;
 
         public FormGame(Game i_newGame)
         {
             r_GameBoard = i_newGame;
             r_DisplayBoard = CreateBoard(r_GameBoard.ReturnBoardLength());
             InitializeComponent();
-            labelPlayer1Score.Text = r_GameBoard.Player1ScoreText;
-            labelPlayer2Score.Text = r_GameBoard.Player2ScoreText;
+            labelPlayer1Score.Text = player1ScoreText();
+            labelPlayer2Score.Text = player2ScoreText();
         }
 
         private void gameForm_Load(object sender, EventArgs e)
@@ -56,8 +60,8 @@ namespace Ex05
 
         private void setFormSizeAndPosition(int i_BoardSize, int i_ButtonSize, int i_Margin, out int o_FormWidth)
         {
-            int formHeight = (i_BoardSize * i_ButtonSize) + 60;
-            o_FormWidth = (i_BoardSize * i_ButtonSize) + (i_Margin * 2);
+            int formHeight = (i_BoardSize * i_ButtonSize) + k_FormTitleBarAndBordersHeight;
+            o_FormWidth = (i_BoardSize * i_ButtonSize) + (i_Margin * k_HeightMarginCorrection);
             this.ClientSize = new Size(o_FormWidth, formHeight);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.CenterToScreen();
@@ -74,8 +78,8 @@ namespace Ex05
         {
             int boardSize = r_GameBoard.ReturnBoardLength();
 
-            labelPlayer1Score.Text = r_GameBoard.Player1ScoreText;
-            labelPlayer2Score.Text = r_GameBoard.Player2ScoreText;
+            labelPlayer1Score.Text = player1ScoreText();
+            labelPlayer2Score.Text = player2ScoreText();
             if (r_GameBoard.currentPlayer.Sign == eCellState.X)
             {
                 labelPlayer1Score.Font = new Font(labelPlayer1Score.Font, FontStyle.Bold);
@@ -87,13 +91,12 @@ namespace Ex05
                 labelPlayer2Score.Font = new Font(labelPlayer2Score.Font, FontStyle.Bold);
             }
 
-            int formWidth = (boardSize * k_ButtonSize) + (k_Margin * 3);
-            int labelsYPosition = (boardSize * k_ButtonSize) + (k_Margin * 3);
-            int gapBetweenLabels = 15;
-            int totalLabelsWidth = labelPlayer1Score.Width + gapBetweenLabels + labelPlayer2Score.Width;
+            int formWidth = (boardSize * k_ButtonSize) + (k_Margin * k_WidthMarginCorrection);
+            int labelsYPosition = (boardSize * k_ButtonSize) + (k_Margin * k_WidthMarginCorrection);
+            int totalLabelsWidth = labelPlayer1Score.Width + k_GapBetweenLabels + labelPlayer2Score.Width;
             int startXPosition = (formWidth - totalLabelsWidth) / 2;
             labelPlayer1Score.Location = new Point(startXPosition, labelsYPosition);
-            labelPlayer2Score.Location = new Point(startXPosition + labelPlayer1Score.Width + gapBetweenLabels, labelsYPosition);
+            labelPlayer2Score.Location = new Point(startXPosition + labelPlayer1Score.Width + k_GapBetweenLabels, labelsYPosition);
         }
 
         private displayButton[,] CreateBoard(int i_BoardSize)
@@ -109,7 +112,7 @@ namespace Ex05
 
             if (clickedButton.Text == string.Empty)
             {
-                r_GameBoard.MakeAHumanMove(clickedButton.Row, clickedButton.Col);
+                r_GameBoard.MakeAHumanMove(clickedButton.Col, clickedButton.Row);
                 bool isGameOver = makeATurn(clickedButton);
                 if (!isGameOver && r_GameBoard.IsAgainstComputer)
                 {
@@ -125,6 +128,8 @@ namespace Ex05
 
         private bool makeATurn(displayButton i_Button)
         {
+            i_Button.draw(r_GameBoard.currentPlayer.Sign);
+
             int boardSize = r_GameBoard.ReturnBoardLength();
             bool isWinner = r_GameBoard.IsWinnerExist();
             bool isTie = r_GameBoard.CheckIfThereIsATie();
@@ -134,9 +139,12 @@ namespace Ex05
                 r_GameBoard.AddPointToWinningPlayer();
             }
 
-            i_Button.draw(r_GameBoard.currentPlayer.Sign);
             updateScoreLabels();
             handleGameOverIfNeeded(isWinner, isTie);
+            if (!isWinner && !isTie)
+            {
+                r_GameBoard.SwitchPlayer();
+            }
 
             return isWinner || isTie;
         }
@@ -197,7 +205,8 @@ namespace Ex05
 
             if (i_IsWinner)
             {
-                o_MessageText = string.Format("The winner is {0}!\nWould you like to play another round?", r_GameBoard.currentPlayer.Name);
+                string winnerName = (r_GameBoard.currentPlayer.Sign == eCellState.X) ? r_GameBoard.GetPlayer2Name() : r_GameBoard.GetPlayer1Name();
+                o_MessageText = string.Format("The winner is {0}!\nWould you like to play another round?", winnerName);
                 o_MessageTitle = "A Win!";
             }
             else if (i_IsTie)
@@ -205,6 +214,18 @@ namespace Ex05
                 o_MessageText = "Tie!\nWould you like to play another round?";
                 o_MessageTitle = "A Tie!";
             }
+        }
+        private string player1ScoreText()
+        {
+            string messege = $"{r_GameBoard.GetPlayer1Name()}: {r_GameBoard.GetPlayer1Score()}"; ;
+
+            return messege;
+        }
+        private string player2ScoreText()
+        {
+            string messege = $"{r_GameBoard.GetPlayer2Name()}: {r_GameBoard.GetPlayer2Score()}"; ;
+
+            return messege;
         }
     }
 }
