@@ -8,6 +8,7 @@ namespace Ex05
         public static void Main() 
         {
             FormGameSettings startMenu = new FormGameSettings();
+
             startMenu.ShowDialog();
         }
     }

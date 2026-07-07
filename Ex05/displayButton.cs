@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Ex05
 {
-    public class displayButton : Button
+    public class DisplayButton : Button
     {
         private readonly int r_Row;
         private readonly int r_Column;
@@ -28,7 +28,7 @@ namespace Ex05
             }
         }
 
-        public displayButton(int i_Row, int i_Column)
+        public DisplayButton(int i_Row, int i_Column)
         {
             r_Row = i_Row; 
             r_Column = i_Column;   

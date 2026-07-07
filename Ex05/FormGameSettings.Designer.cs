@@ -81,7 +81,7 @@ namespace Ex05
             this.checkBox1.Size = new System.Drawing.Size(22, 21);
             this.checkBox1.TabIndex = 3;
             this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.playAgainstHumanChecked);
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBoxPlayAgainstHuman_CheckedChanged);
             // 
             // label3
             // 
@@ -143,7 +143,7 @@ namespace Ex05
             0,
             0,
             0});
-            this.RowSize.ValueChanged += new System.EventHandler(this.rowSize_ValueChanged);
+            this.RowSize.ValueChanged += new System.EventHandler(this.numericUpDownRowSize_ValueChanged);
             // 
             // ColumnSize
             // 
@@ -166,7 +166,7 @@ namespace Ex05
             0,
             0,
             0});
-            this.ColumnSize.ValueChanged += new System.EventHandler(this.columnSize_ValueChanged);
+            this.ColumnSize.ValueChanged += new System.EventHandler(this.numericUpDownColumnSize_ValueChanged);
             // 
             // ColomsLabel
             // 
@@ -185,7 +185,7 @@ namespace Ex05
             this.StartButton.TabIndex = 11;
             this.StartButton.Text = "Start! ";
             this.StartButton.UseVisualStyleBackColor = true;
-            this.StartButton.Click += new System.EventHandler(this.startButton_Click);
+            this.StartButton.Click += new System.EventHandler(this.buttonStart_Click);
             // 
             // FormGameSettings
             // 

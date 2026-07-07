@@ -13,8 +13,8 @@ namespace Ex05
 {
     public partial class FormGame : Form
     {
-        private readonly Game r_GameBoard;
-        private readonly displayButton[,] r_DisplayBoard;
+        private readonly GameManager r_GameManager;
+        private readonly DisplayButton[,] r_DisplayBoard;
         private const int k_ButtonSize = 60;
         private const int k_Margin = 10;
         private const int k_GapBetweenLabels = 15;
@@ -22,10 +22,10 @@ namespace Ex05
         private const int k_HeightMarginCorrection = 2;
         private const int k_FormTitleBarAndBordersHeight = 60;
 
-        public FormGame(Game i_newGame)
+        public FormGame(GameManager i_newGameManager)
         {
-            r_GameBoard = i_newGame;
-            r_DisplayBoard = CreateBoard(r_GameBoard.ReturnBoardLength());
+            r_GameManager = i_newGameManager;
+            r_DisplayBoard = createBoard(r_GameManager.ReturnBoardLength());
             InitializeComponent();
             registerToGameEvents();
             labelPlayer1Score.Text = player1ScoreText();
@@ -34,18 +34,18 @@ namespace Ex05
 
         private void registerToGameEvents()
         {
-            r_GameBoard.CellChanged += board_CellChanged;
-            r_GameBoard.TurnOrScoreChanged += board_TurnOrScoreChanged;
-            r_GameBoard.GameEndedWithWinner += board_GameEndedWithWinner;
-            r_GameBoard.GameEndedWithTie += board_GameEndedWithTie;
+            r_GameManager.CellChanged += gameBoard_CellChanged;
+            r_GameManager.TurnOrScoreChanged += gameBoard_TurnOrScoreChanged;
+            r_GameManager.GameEndedWithWinner += board_GameEndedWithWinner;
+            r_GameManager.GameEndedWithTie += board_GameEndedWithTie;
         }
 
-        private void board_CellChanged(int i_Row, int i_Col, eCellState i_Sign)
+        private void gameBoard_CellChanged(int i_Row, int i_Col, eCellState i_Sign)
         {
             r_DisplayBoard[i_Row, i_Col].draw(i_Sign);
         }
 
-        private void board_TurnOrScoreChanged()
+        private void gameBoard_TurnOrScoreChanged()
         {
             updateScoreLabels();
         }
@@ -63,7 +63,7 @@ namespace Ex05
 
         private void gameForm_Load(object sender, EventArgs e)
         {
-            int boardSize = r_GameBoard.ReturnBoardLength();
+            int boardSize = r_GameManager.ReturnBoardLength();
             int formWidth;
 
             initializeGameButtons(boardSize, k_ButtonSize, k_Margin);
@@ -77,13 +77,13 @@ namespace Ex05
             {
                 for (int j = 0; j < i_BoardSize; j++)
                 {
-                    r_DisplayBoard[i, j] = new displayButton(i, j);
+                    r_DisplayBoard[i, j] = new DisplayButton(i, j);
                     r_DisplayBoard[i, j].Size = new Size(i_ButtonSize, i_ButtonSize);
                     int positionX = i_Margin + (j * i_ButtonSize);
                     int positionY = i_Margin + (i * i_ButtonSize);
                     r_DisplayBoard[i, j].Location = new Point(positionX, positionY);
-                    r_DisplayBoard[i, j].Click += displayButtonClick;
-                    this.Controls.Add(r_DisplayBoard[i, j]);
+                    r_DisplayBoard[i, j].Click += displayButton_Click;
+                    Controls.Add(r_DisplayBoard[i, j]);
                 }
             }
         }
@@ -92,9 +92,9 @@ namespace Ex05
         {
             int formHeight = (i_BoardSize * i_ButtonSize) + k_FormTitleBarAndBordersHeight;
             o_FormWidth = (i_BoardSize * i_ButtonSize) + (i_Margin * k_HeightMarginCorrection);
-            this.ClientSize = new Size(o_FormWidth, formHeight);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.CenterToScreen();
+            ClientSize = new Size(o_FormWidth, formHeight);
+            StartPosition = FormStartPosition.CenterScreen;
+            CenterToScreen();
         }
 
         private void initializeScoreLabels()
@@ -106,11 +106,11 @@ namespace Ex05
 
         private void updateScoreLabels()
         {
-            int boardSize = r_GameBoard.ReturnBoardLength();
+            int boardSize = r_GameManager.ReturnBoardLength();
 
             labelPlayer1Score.Text = player1ScoreText();
             labelPlayer2Score.Text = player2ScoreText();
-            if (r_GameBoard.currentPlayer.Sign == eCellState.X)
+            if (r_GameManager.CurrentPlayer.Sign == eCellState.X)
             {
                 labelPlayer1Score.Font = new Font(labelPlayer1Score.Font, FontStyle.Bold);
                 labelPlayer2Score.Font = new Font(labelPlayer2Score.Font, FontStyle.Regular);
@@ -129,31 +129,31 @@ namespace Ex05
             labelPlayer2Score.Location = new Point(startXPosition + labelPlayer1Score.Width + k_GapBetweenLabels, labelsYPosition);
         }
 
-        private displayButton[,] CreateBoard(int i_BoardSize)
+        private DisplayButton[,] createBoard(int i_BoardSize)
         {
-            return new displayButton[i_BoardSize, i_BoardSize];
+            return new DisplayButton[i_BoardSize, i_BoardSize];
         }
 
-        private void displayButtonClick(object sender, EventArgs e)
+        private void displayButton_Click(object sender, EventArgs e)
         {
-            displayButton clickedButton = sender as displayButton;
+            DisplayButton clickedButton = sender as DisplayButton;
 
             if (clickedButton.Text == string.Empty)
             {
-                r_GameBoard.PlayRound(clickedButton.Row, clickedButton.Col);
+                r_GameManager.PlayRound(clickedButton.Row, clickedButton.Col);
             }
         }
 
         private void resetBoard()
         {
-            r_GameBoard.ResetLogicalBoard();
+            r_GameManager.ResetLogicalBoard();
             resetPhysicalBoard();
             updateScoreLabels();
         }
 
         private void resetPhysicalBoard()
         {
-            foreach (displayButton button in r_DisplayBoard)
+            foreach (DisplayButton button in r_DisplayBoard)
             {
                 if (button != null)
                 {
@@ -165,7 +165,7 @@ namespace Ex05
 
         private void endGame()
         {
-            this.Close();
+            Close();
         }
 
         private void askForRematch(string i_MessageText, string i_MessageTitle)
@@ -183,11 +183,11 @@ namespace Ex05
 
         private string player1ScoreText()
         {
-            return $"{r_GameBoard.GetPlayer1Name()}: {r_GameBoard.GetPlayer1Score()}"; 
+            return $"{r_GameManager.GetPlayer1Name()}: {r_GameManager.GetPlayer1Score()}"; 
         }
         private string player2ScoreText()
         {
-            return $"{r_GameBoard.GetPlayer2Name()}: {r_GameBoard.GetPlayer2Score()}";
+            return $"{r_GameManager.GetPlayer2Name()}: {r_GameManager.GetPlayer2Score()}";
         }
     }
 }

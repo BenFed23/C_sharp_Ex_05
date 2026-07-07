@@ -23,13 +23,13 @@ namespace Ex05
             
         }
 
-        private void playAgainstHumanChecked(object sender, EventArgs e)
+        private void checkBoxPlayAgainstHuman_CheckedChanged(object sender, EventArgs e)
         {
             textBox2.Enabled = checkBox1.Checked;
             textBox2.Text = checkBox1.Checked ? string.Empty : "Computer";
         }
 
-        private void startButton_Click(object sender, EventArgs e)
+        private void buttonStart_Click(object sender, EventArgs e)
         {
             string player1Name;
             string player2Name;
@@ -50,15 +50,15 @@ namespace Ex05
 
         private void launchGame(string i_Player1Name, string i_Player2Name, bool i_IsAgainstComputer, int i_BoardSize)
         {
-            Game newGame = new Game(i_Player1Name, i_Player2Name, i_IsAgainstComputer, i_BoardSize);
+            GameManager newGameManager = new GameManager(i_Player1Name, i_Player2Name, i_IsAgainstComputer, i_BoardSize);
 
             Hide();
-            FormGame newGameDisplay = new FormGame(newGame);
+            FormGame newGameDisplay = new FormGame(newGameManager);
             newGameDisplay.ShowDialog();
             Close();
         }
 
-        private void rowSize_ValueChanged(object sender, EventArgs e)
+        private void numericUpDownRowSize_ValueChanged(object sender, EventArgs e)
         {
             if (ColumnSize.Value != RowSize.Value)
             {
@@ -66,7 +66,7 @@ namespace Ex05
             }
         }
 
-        private void columnSize_ValueChanged(object sender, EventArgs e)
+        private void numericUpDownColumnSize_ValueChanged(object sender, EventArgs e)
         {
             if (RowSize.Value != ColumnSize.Value)
             {

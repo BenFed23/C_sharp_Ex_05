@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Ex05
 {
-    public class Game
+    public class GameManager
     {
         private readonly GameEngine r_GameEngine;
         private readonly TicTacToeBoard r_Board;
@@ -18,7 +18,7 @@ namespace Ex05
         public event Action GameEndedWithTie;
         public event Action TurnOrScoreChanged;
 
-        public Game(string i_Player1Name, string i_Player2Name, bool i_GameAgainstComputer, int i_BoardSize)
+        public GameManager(string i_Player1Name, string i_Player2Name, bool i_GameAgainstComputer, int i_BoardSize)
         {
             r_GameEngine = new GameEngine();
             m_IsAgainstComputer = i_GameAgainstComputer;
@@ -35,7 +35,7 @@ namespace Ex05
                 bool isGameOver = handlePostMoveActions(i_Row, i_Column);
                 if (!isGameOver && m_IsAgainstComputer)
                 {
-                    Point? computerMove = MakeAComputerMove();
+                    Point? computerMove = makeAComputerMove();
                     if (computerMove.HasValue)
                     {
                         r_Board.FillCell(computerMove.Value.Y, computerMove.Value.X, m_CurrentPlayer.Sign);
@@ -48,12 +48,13 @@ namespace Ex05
 
         private bool handlePostMoveActions(int i_Row, int i_Column)
         {
-            CellChanged?.Invoke(i_Row, i_Column, m_CurrentPlayer.Sign);
             bool isGameOver = checkGameOverStates();
+
+            onCellChanged(i_Row, i_Column, m_CurrentPlayer.Sign);
             if (!isGameOver)
             {
-                SwitchPlayer();
-                TurnOrScoreChanged?.Invoke();
+                switchPlayer();
+                onTurnOrScoreChanged();
             }
 
             return isGameOver;
@@ -63,40 +64,40 @@ namespace Ex05
         {
             bool isGameOver = false;
 
-            if (IsWinnerExist())
+            if (isWinnerExist())
             {
-                AddPointToWinningPlayer();
-                TurnOrScoreChanged?.Invoke();
-                Player realWinner = (m_CurrentPlayer == r_Player1) ? r_Player2 : r_Player1;
-                GameEndedWithWinner?.Invoke(realWinner.Name);
+                addPointToWinningPlayer();
+                onTurnOrScoreChanged();
+                Player gameWinner = (m_CurrentPlayer == r_Player1) ? r_Player2 : r_Player1;
+                onGameEndedWithWinner(gameWinner.Name);
                 isGameOver = true;
             }
-            else if (CheckIfThereIsATie())
+            else if (checkIfThereIsATie())
             {
-                GameEndedWithTie?.Invoke();
+                onGameEndedWithTie();
                 isGameOver = true;
             }
 
             return isGameOver;
         }
-        
-        public Point? MakeAComputerMove()
+
+        private Point? makeAComputerMove()
         {
-            Point? computerChosenCell = r_GameEngine.ComputerMove(r_Board,m_CurrentPlayer.Sign);
-       
-            return computerChosenCell;
+            return r_GameEngine.ComputerMove(r_Board,m_CurrentPlayer.Sign);
         }
 
-        public void AddPointToWinningPlayer()
+        private void addPointToWinningPlayer()
         {
             Player winningPlayer = (m_CurrentPlayer == r_Player1) ? r_Player2 : r_Player1;
             winningPlayer.Score++;
         }
-        public bool IsWinnerExist()
+
+        private bool isWinnerExist()
         {
             return r_GameEngine.IsFullRowColumnOrDiagonalInBoard(r_Board);
         }
-        public bool CheckIfThereIsATie()
+
+        private bool checkIfThereIsATie()
         {
             return r_GameEngine.isFullBoard(r_Board);
         }
@@ -106,16 +107,50 @@ namespace Ex05
             r_Board.FillBoardWithBlankSpaces();
             m_CurrentPlayer = r_Player1;
         }
-        public void SwitchPlayer()
+
+        private void switchPlayer()
         {
             m_CurrentPlayer = (m_CurrentPlayer == r_Player1) ? r_Player2 : r_Player1;
         }
+
         public int ReturnBoardLength()
         {
             return r_Board.Size;
         }
 
-        public Player currentPlayer 
+        protected virtual void onCellChanged(int i_Row, int i_Col, eCellState i_Sign)
+        {
+            if (CellChanged != null)
+            {
+                CellChanged.Invoke(i_Row, i_Col, i_Sign);
+            }
+        }
+
+        protected virtual void onGameEndedWithWinner(string i_WinnerName)
+        {
+            if (GameEndedWithWinner != null)
+            {
+                GameEndedWithWinner.Invoke(i_WinnerName);
+            }
+        }
+
+        protected virtual void onGameEndedWithTie()
+        {
+            if (GameEndedWithTie != null)
+            {
+                GameEndedWithTie.Invoke();
+            }
+        }
+
+        protected virtual void onTurnOrScoreChanged()
+        {
+            if (TurnOrScoreChanged != null)
+            {
+                TurnOrScoreChanged.Invoke();
+            }
+        }
+
+        public Player CurrentPlayer
         {
             get 
             {

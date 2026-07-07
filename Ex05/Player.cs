@@ -7,13 +7,13 @@ namespace Ex05
     public class Player
     {
         private int m_Score;
-        private eCellState m_Sign;
-        private string m_Name;
+        private readonly eCellState r_Sign;
+        private readonly string r_Name;
 
         public Player(eCellState i_Sign, string i_Name) 
         {
-            m_Sign = i_Sign;
-            m_Name = i_Name;
+            r_Sign = i_Sign;
+            r_Name = i_Name;
             m_Score = 0;
         }
 
@@ -21,7 +21,7 @@ namespace Ex05
         {
             get
             {
-                return m_Sign;
+                return r_Sign;
             }   
         }
       
@@ -40,7 +40,7 @@ namespace Ex05
         {
             get
             {
-                return m_Name;
+                return r_Name;
             }
         }
     }
